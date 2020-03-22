@@ -1,0 +1,151 @@
+#divsEtud{
+    transition-duration:1s;
+}
+
+#divsEtud:hover{
+    background-color:#D1D1D1;
+    transition-duration:1s;
+}
+
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: blanchedalmond;
+
+  font-family: sans-serif;
+}
+
+/* ---------------------------- NAV -------------------------- */
+#lienLogo{
+  font-size: xx-large;
+  color: white;
+  text-decoration: none;
+}
+
+#logoMySchool {
+    width: 30px;
+}
+
+#lienLogo:hover{
+  opacity:0.8;
+  transition : 0.5s;
+}
+
+
+.logosNav {
+    width:25px;
+    margin-right:5px;
+}
+
+/* ---------------------------- NAV -------------------------- */
+
+
+.focus:hover{
+font-size: 16.1px;
+}
+
+aside{
+  background-color: grey;
+  min-height : 100%;
+  min-height: 100vh;
+}
+
+
+
+.optionMenu{
+  width: 90%;
+  background-color: darkgrey;
+  font-weight: bold;
+  font-size: 10px;
+}
+.btn-secondary {
+  background-color: darkgrey;
+}
+
+.shadow-textarea textarea.form-control::placeholder {
+    font-weight: 300;
+}
+.shadow-textarea textarea.form-control {
+    padding-left: 0.8rem;
+}
+
+.photoEtud{
+  width: 85%;
+  height: 75%;
+  border: 2px solid darkblue;
+  border-radius: 1em;
+  
+}
+
+.boutonAjout{
+  border: 2px solid darkblue;border-radius:10px;color:white;padding:5px;
+}
+
+.etablissement{
+  border: 2px solid rgb(98, 98, 100);border-radius:5px;
+  background-color: darkgrey;
+}
+
+.conteneurInputEtud{
+  text-align:left;
+}
+
+.inputFormEtud{
+  padding: 2%;
+  float:left;
+  margin-left: 6%;;
+}
+
+
+#divImportation{
+ overflow-y: scroll;
+/*margin: 1.5%;
+  padding :0.5;*/
+  background-color : #7F7F7F7F;
+  border: 2px dotted;    
+}
+#divImportation1{
+    background-color : #FFF;
+    margin:0.5%;
+}
+#message{
+  resize: none;
+  font-size: .8rem;
+  letter-spacing: 1px;
+  padding: 10px;
+  line-height: 1.5;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px #999;
+}
+#sujet{
+  font-size: .8rem;
+  letter-spacing: 1px;
+  padding: 10px;
+  line-height: 1.5;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px #999;
+}
+
+
+.instructionEnImage{
+  margin-left: 25%;
+  width : 80%;
+  height: 25%;
+}
+
+.instructionEnImage {
+    width : 50%;
+}
+.instructionEnImage1 {
+    margin-right:1%;
+    width:100%;
+}
+
+#formConnect{
+    margin-top:5%;
+}
