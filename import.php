@@ -1,4 +1,8 @@
 
+<link rel="stylesheet" href="bootstrap/mdbootstrap/css/bootstrap.min.css">
+<!-- Material Design Bootstrap -->
+<link rel="stylesheet" href="bootstrap/mdbootstrap/css/mdb.min.css">
+
 <!-- Material Design Bootstrap -->
 <link href="bootstrap-css/bootstrap.css" rel="stylesheet" >
 <link href="css/style.css" rel="stylesheet" >
@@ -11,8 +15,24 @@
 <script src="mod_etudiant/script/formAjoutEtud.js" ></script>
 <script src="mod_composant/script/barreRecherche.js" ></script>
 
-<link rel="stylesheet" href="bootstrap/mdbootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="bootstrap/mdbootstrap/css/mdb.min.css">
+<script>
+	function changeImgG(){
+		document.getElementById('flecheG').src="ressources/imgSite/logos/gestion/prec2.png";
+	}
+
+	function changeImgD(){
+		document.getElementById('flecheD').src="ressources/imgSite/logos/gestion/suivant2.png";
+	}
+
+	function defaultImgG(){
+		document.getElementById('flecheG').src="ressources/imgSite/logos/gestion/prec.png";
+	}
+
+	function defaultImgD(){
+		document.getElementById('flecheD').src="ressources/imgSite/logos/gestion/suivant.png";
+	}
+</script>
+
  <!--
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">

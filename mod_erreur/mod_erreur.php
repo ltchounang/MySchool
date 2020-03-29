@@ -31,9 +31,14 @@ if(!empty($messErreur)){
             case 'formModifEtud':
                 $contEtudiant->form_updateEtud();
             break;
-
+            
+            case 'formEspaceMembre':
+                $contConnexion->form_espace_membre();
+                break;
+            
             case 'form_addEtab':
                 $contEtablissement->form_addEtab();
+        
             break;
         }
 

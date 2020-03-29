@@ -62,14 +62,13 @@ class ModeleEtablissement extends ModeleGenerique{
 
     public function update_etablissementEtudBD($nomEtab,$typeEtab,$dateDeb,$dateFin,$typeForm,$idEtab,$idEtud){
         self::update_etablissementBD($nomEtab,$typeEtab,$idEtab);
-        
+
         if(empty($dateDeb)) $dateDeb='0000-00-00';
         if(empty($dateFin)) $dateFin='0000-00-00';
         
         $req2 = self::$bdd->prepare('UPDATE former SET typeFormation = (?) , dateDebut = (?) , dateFin = (?) where idEtablissement = (?) and idEtud = (?)');
         $req2->execute(array($typeForm,$dateDeb,$dateFin,$idEtab,$idEtud));
     }
-
 
     public function delete_etabBD($idEtab){
             $req = self::$bdd->prepare('DELETE FROM former where idEtablissement = ?');

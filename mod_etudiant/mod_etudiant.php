@@ -53,6 +53,10 @@ try{
                     $contEtudiant->delete_student();
                 break;
 
+                case 'groupeEtud':
+                    // A FAIRE
+                    break;
+
                 default:
                     $contEtudiant->list_Student();
                 break;

@@ -6,14 +6,13 @@ $(document).ready(function(){
 
     function afficheResultatRecherche(elementRecherche){
         let trieRecherche = $('#trier').val();
-        let filtreRecherche = $('#filtrer').val();
         $.ajax({ 
             url: "mod_composant/ajax/ajax_barreRecherche.php", 
             method: "GET",
             dataType: "json",
             data : {trier : trieRecherche,
-                element : elementRecherche,
-                filtrer : filtreRecherche},
+                element : elementRecherche
+            },
             success: function(data){
                $('#resultat-recherche').html(data);
             } ,
@@ -24,10 +23,6 @@ $(document).ready(function(){
     }
     
     $('#trier').change(function(){
-        afficheResultatRecherche("");
-    });
-
-    $('#filtrer').change(function(){
         afficheResultatRecherche("");
     });
 

@@ -9,6 +9,7 @@ class formAjoutEtudException extends Exception {};
 class formModifEtudException extends Exception {};
 class formCoException extends Exception {};
 class formInsException extends Exception {};
+class formModifException extends Exception {};
 class formAjoutEtabException extends Exception {};
 class formModifEtudEtabException extends Exception {};
 

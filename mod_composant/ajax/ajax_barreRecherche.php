@@ -19,7 +19,7 @@ if($element != false){
     $req->execute(array($trie));
 }
 ob_start();
-
+$i = 0;
 if(!empty($req)){
     $listEtudiant = $req->fetchAll();
     foreach ($listEtudiant as $donnees) {
@@ -32,6 +32,7 @@ if(!empty($req)){
         if($donnees['situationActuelle'] == NULL)$donnees['situationActuelle'] = "Non renseigné";
         if($donnees['anneePromotion'] == NULL)$donnees['anneePromotion'] = "Non renseigné";
 
+        $i ++;
         require $doc_root."/mod_etudiant/vue_etudiant/etudiant.php";
 
     }
