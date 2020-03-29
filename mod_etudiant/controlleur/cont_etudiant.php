@@ -37,10 +37,24 @@ class ContEtudiant extends ContGenerique{
     }
 
     function list_Student(){
+        $nbEtudiants = $this->modeleEtud->nb_students();
+        
+        $nbPagesTotales = ceil($nbEtudiants/10);
+        
+        if (isset($_GET['page']) and !empty($_GET['page'])) {
+            $page = $_GET['page'];
 
-        $listEtudiant = $this->modeleEtud->get_Students(); 
+            $listEtudiant = $this->modeleEtud->get_Students($page);
 
-        require('mod_etudiant/vue_etudiant/listEtud.php');
+            require('mod_etudiant/vue_etudiant/listEtud.php');
+        }
+        else {
+            $page = 1;
+            $listEtudiant = $this->modeleEtud->get_Students($page);
+
+            require('mod_etudiant/vue_etudiant/listEtud.php');
+        }
+        
     }
 
     function form_updateEtud(){
@@ -195,6 +209,10 @@ public function convertisseur_tableau_en_array_par_ligne($tab){
             array_push($array1,$a);
         }
     return $array1;
+}
+
+public function get_groupes(){
+    // A FAIRE
 }
  
 }

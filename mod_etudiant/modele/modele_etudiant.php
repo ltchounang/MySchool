@@ -64,12 +64,18 @@ public function est_present($numEtud){
        $req->execute(array($numEtud));
        return $req->fetchAll();
    }
-    public function get_Students(){
-        $reponse = self::$bdd->query('SELECT * FROM etudiant order by idEtud desc');
+    public function get_Students($page){
+        $reponse = self::$bdd->query('SELECT * FROM etudiant order by idEtud desc limit '.(($page-1)*10). ','. 10);
         return $reponse;
         $reponse->closeCursor();
     }
-   
+    
+    public function nb_students(){
+        $reponse = self::$bdd->query('SELECT idEtud from etudiant');
+        $nbEtud = $reponse->rowCount();
+        return $nbEtud;
+    }
+
     public function get_studentBD($idEtud){
         $req = self::$bdd->prepare('SELECT * FROM etudiant WHERE idEtud = ?');
         $req->execute(array($idEtud));
@@ -77,7 +83,9 @@ public function est_present($numEtud){
     }
  
     
-
+    public function get_groupes(){
+        /*   A FAIRE   */
+    }
 		    
 		    
     public function update_studentBD($numApo,$file,$nomEtud,$prenom,$dateNaiss,

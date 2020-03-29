@@ -30,6 +30,14 @@ try{
                         $contConnexion->add_responsable();
                     break;
 
+                    case 'formEspaceMembre':
+                        $contConnexion->form_espace_membre();
+                        break;
+
+                    case 'modifierResp':
+                        $contConnexion->modifier_resp();
+                        break;
+
                     default:
                         $contConnexion->form_connexion();
                     break;
@@ -52,4 +60,8 @@ try{
 catch(formInsException $e){
     $messErreur = $e->getMessage();
     $page = 'formAjoutResp';
+}
+catch(formModifException $e){
+    $messErreur = $e->getMessage();
+    $page = 'formEspaceMembre';
 }

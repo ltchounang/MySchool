@@ -27,6 +27,10 @@ if(!empty($messErreur)){
 
             case 'formModifEtud':
                 $contEtudiant->form_updateEtud();
+
+            case 'formEspaceMembre':
+                $contConnexion->form_espace_membre();
+                break;
             break;
         }
 

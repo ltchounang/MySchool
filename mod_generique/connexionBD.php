@@ -2,7 +2,7 @@
 
  try
  {
-     $bdG = new PDO('mysql:host=localhost;dbname=id12990171_db_myschool;charset=utf8', 'id12990171_nimportequoi', 'Myschool2020'); 
+     $bdG = new PDO('mysql:host=localhost;dbname=gestionetudiant;charset=utf8', 'root', ''); 
      //$bdGestion->setAttribute(PDO :: ATTR_ERRMODE , PDO :: ERRMODE_EXCEPTION ); //active l'affichage des erreurs
  }
  catch(Exception $e)
