@@ -1,3 +1,4 @@
+
 #------------------------------------------------------------
 #        Script MySQL.
 #------------------------------------------------------------
@@ -87,5 +88,31 @@ CREATE TABLE appartenirAuGroupe(
 	,CONSTRAINT appartenirAuGroupe_etudiant_FK FOREIGN KEY (idEtud) REFERENCES etudiant(idEtud)
 	,CONSTRAINT appartenirAuGroupe_groupe0_FK FOREIGN KEY (idGroupe) REFERENCES groupe(idGroupe)
 )ENGINE=InnoDB;
+
+INSERT INTO `responsable` (`idResp`, `identifiant`, `motDePasse`) VALUES
+(1, 'responsable', '$2y$10$js3qTAQEajAECf3IXcw6weQVSpKDXBsT210T2i8VJS/tguf72gkp6');
+
+
+ALTER TABLE `etablissement`
+  ADD PRIMARY KEY (`idEtablissement`),
+  ADD UNIQUE KEY `idEtablissement` (`idEtablissement`);
+
+
+ALTER TABLE `etudiant`
+  ADD PRIMARY KEY (`idEtud`),
+  ADD UNIQUE KEY `idEtud` (`idEtud`);
+
+ALTER TABLE `former`
+  ADD PRIMARY KEY (`idEtablissement`,`idEtud`),
+  ADD KEY `former_etablissement_FK` (`idEtablissement`) USING BTREE,
+  ADD KEY `former_etudiant_FK` (`idEtud`) USING BTREE;
+
+
+ALTER TABLE `responsable`
+  ADD PRIMARY KEY (`idResp`),
+  ADD UNIQUE KEY `idResp` (`idResp`);
+
+ALTER TABLE `etablissement`
+  MODIFY `idEtablissement` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 
