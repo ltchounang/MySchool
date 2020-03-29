@@ -38,7 +38,10 @@ if(!empty($messErreur)){
             
             case 'form_addEtab':
                 $contEtablissement->form_addEtab();
-        
+                 break;
+ 
+            case 'importer_fichier':
+                $contEtudiant->importer_fichier();
             break;
         }
 

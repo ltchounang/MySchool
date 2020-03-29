@@ -35,11 +35,20 @@ class ModeleEtudiant extends ModeleGenerique{
         $courriel,$tel,$adrr1,$adrr2,$AnneePromo,$situationActu));
             return self::$bdd->lastInsertId();
     }
-public function est_present($numEtud){
-       $req = self::$bdd->prepare('SELECT * FROM etudiant where numApogee=?');
-       $req->execute(array($numEtud));
-       return $req->fetchAll();
-   }
+    public function add_studentBD_sans_img($numApo,$nomEtud,$prenom,$dateNaiss,
+    $courriel,$tel,$adrr1,$adrr2,$AnneePromo,$situationActu){
+      $req = self::$bdd->prepare('INSERT into etudiant (numApogee,
+            nomEtud,prenomEtud,dateNaiss,courriel,telEtud,adr1,adr2,
+            anneePromotion,situationActuelle) values (?,?,?,?,?,?,?,?,?,?)');
+            $req->execute(array($numApo,$nomEtud,$prenom,$dateNaiss,
+        $courriel,$tel,$adrr1,$adrr2,$AnneePromo,$situationActu));
+           
+    }
+    public function est_present($numEtud){
+           $req = self::$bdd->prepare('SELECT numApogee FROM etudiant where numApogee=?');
+           $req->execute(array($numEtud));
+           return empty($req->fetchAll());
+    }
   
     public function get_Students($page){
         $reponse = self::$bdd->query('SELECT * FROM etudiant order by idEtud desc limit '.(($page-1)*10). ','. 10);
