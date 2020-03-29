@@ -1,7 +1,6 @@
-<?php require_once('import.php'); ?>
 
 <!-- Bar de navigation en haut -->
-<nav id=navbar class="mb-2 navbar navbar-expand-lg navbar-dark default-color-dark lighten-1">
+<nav class="mb-2 navbar navbar-expand-lg navbar-dark default-color-dark lighten-1">
   <!-- Logo et nom du site, qui redirigent tout les deux vers la liste des étudiants -->
   <a id="lienLogo" href="index.php?module=etudiant"><img id="logoMySchool" src="ressources/imgSite/logos/nav/myschool.png" alt="logoSite"/> MySchool </a>
 
@@ -27,7 +26,8 @@
           <a class="dropdown-item" href="index.php?module=connexion&action=formAjoutResp"><img class="logosNav" src="ressources/imgSite/logos/nav/logo_ajouter_responsable.png" alt="logoAjoutResp"/> Ajouter un responsable </a>
 
           <!-- Espace dans lequel l'utilisateur peut changer ses informations : identifiant, mot de passe... -->
-          <a class="dropdown-item" href="#"><img class="logosNav" src="ressources/imgSite/logos/nav/logo_espace_membre.png" alt="logoEspaceMemb"/> Espace membre </a>
+
+          <a class="dropdown-item" href="index.php?module=connexion&action=formEspaceMembre"><img class="logosNav" src="ressources/imgSite/logos/nav/logo_espace_membre.png" alt="logoEspaceMemb"/> Espace membre </a>
           
           <div class="dropdown-divider"></div>
             <!-- Option pour se déconnecter qui renvoie vers la page de connexion -->

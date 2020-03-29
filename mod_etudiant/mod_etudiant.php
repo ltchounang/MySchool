@@ -21,8 +21,8 @@ try{
                 
                 case 'importer_fichier':
                         
-                        $contEtudiant->importer_fichier();
-                        break;
+                    $contEtudiant->importer_fichier();
+                    break;
     
                 case 'validation_fichier':
                     
@@ -53,6 +53,10 @@ try{
                     $contEtudiant->delete_student();
                 break;
 
+                case 'groupeEtud':
+                    // A FAIRE
+                    break;
+
                 default:
                     $contEtudiant->list_Student();
                 break;
@@ -73,3 +77,4 @@ catch(formModifEtudException $e){
     $messErreur = $e->getMessage();
     $page = 'importer_fichier';
 }
+

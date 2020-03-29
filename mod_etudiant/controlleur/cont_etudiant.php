@@ -15,6 +15,45 @@ class ContEtudiant extends ContGenerique{
         $this->contEtab = new ContEtablissement();
     }
 
+
+    public function fichier_image($file){
+        $img=NULL;
+        $erreur = null;
+        if(1) {
+            $file_name = $file['img']['name'];
+            $file_tmp_name = $file['img']['tmp_name'];
+            $file_dest = 'mod_etudiant/photos/'.$file_name;
+            $file_extension = strrchr($file_name, ".");
+        
+        $extensions_autorises = array('.png','.jpg','.jpeg','.gif','.PNG','.JPG','.JPEG','.GIF');
+        if(in_array( $file_extension, $extensions_autorises)) {
+            if (move_uploaded_file($file_tmp_name, $file_dest)) {
+                if($_FILES['img']['error'] == 0) {
+                    $img = $file_dest;
+                }
+                else{
+                    $erreur = 'erreur nom de l\'image non attribué dans la BD' ;
+                }
+            }
+            else
+                $erreur = 'Erreur lors de la récupération de l\'image';
+        }
+        else {
+            $erreur = null;
+            //$erreur = 'On ne peut pas uploader un fichier qui n\'est pas une image !';
+        }
+    }
+
+    if($erreur != null){
+        if($_GET['action'] == 'ajouterEtudiant')
+            throw new formAjoutEtudException($erreur);
+        else
+            throw new formModifEtudException($erreur);
+    }
+        return $img;
+    } 
+
+
     function form_addEtud(){
         $action = 'ajouterEtudiant';
         $photoEtud = 'bootstrap-icons/icons/person.svg';
@@ -25,29 +64,58 @@ class ContEtudiant extends ContGenerique{
     function add_Student(){
         if(empty(htmlspecialchars($_POST['nom'])) || empty(htmlspecialchars($_POST['prenom'])))
             throw new formAjoutEtudException("Impossible d'ajouter l'étudiant. Le nom et le prénom ne sont pas définie");
-            
-        //if(empty(htmlspecialchars($_POST['objet'])) || empty(htmlspecialchars($_POST['message']) || (empty(htmlspecialchars($_POST['courriel'])) || !filter_var($_POST['courriel'], FILTER_VALIDATE_EMAIL))))
-          //  throw new formAjoutEtudException("Impossible d'ajouter l'étudiant.Veuillez remplir tous les champs concernant l\'email");
-            
+
         if($this->modeleEtud->student_existBD(htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom'])) != 0)
             throw new formAjoutEtudException('Impossible d\'ajouter l\'étudiant. Le nom et le prénom ont déjà été attribué à un étudiant. ['.htmlspecialchars($_POST['nom']).' : '.htmlspecialchars($_POST['prenom']).']');
-
-        $idEtud = $this->modeleEtud->add_studentBD(htmlspecialchars($_POST['numApogee']),$_FILES,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
+            $photoEtud = self::fichier_image($_FILES);
+        
+      $idEtud = $this->modeleEtud->add_studentBD(htmlspecialchars($_POST['numApogee']),$photoEtud,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
         htmlspecialchars($_POST['courriel']),htmlspecialchars($_POST['tel']),htmlspecialchars($_POST['adr1']),htmlspecialchars($_POST['adr2']),htmlspecialchars($_POST['anneePromotion']),htmlspecialchars($_POST['situationActuelle']));
-        mail($_POST['courriel'],$_POST['objet'],$_POST['message']);
-        $this->contEtab->add_etablissement($idEtud);
-        self::list_Student();
+
+        $this->contEtab->add_etablissementEtud($idEtud);
+
+        self::back_toPage();
     }
 
     function list_Student(){
-
-        $listEtudiant = $this->modeleEtud->get_Students(); 
+        $nbEtudiants = $this->modeleEtud->nb_students();
         
-        require('mod_etudiant/vue_etudiant/listEtud.php');
-    }
+        $nbPagesTotales = ceil($nbEtudiants/10);
+        
+        if (isset($_GET['page']) and !empty($_GET['page'])) {
+            $page = $_GET['page'];
 
-    function form_updateEtud(){
-        //on initialise les variables pour remplir les champs du formulaire
+            $listEtudiant = $this->modeleEtud->get_Students($page);
+
+            require('mod_etudiant/vue_etudiant/listEtud.php');
+        }
+        else {
+            $page = 1;
+            $listEtudiant = $this->modeleEtud->get_Students($page);
+
+            require('mod_etudiant/vue_etudiant/listEtud.php');
+        }
+    }
+    
+    function back_toPage(){
+        if(isset($_POST['pageRetour'])){
+            if($_POST['pageRetour'] == "ajouterEtudiant"){
+                self::form_addEtud();
+            }
+            elseif($_POST['pageRetour'] != "listeEtud"){
+                self::form_updateEtud();
+            }
+            else{
+                self::list_Student();
+            }
+        }
+        else{
+            self::list_Student();
+        }
+    }
+  
+    function form_updateEtud(){//on initialise les variables pour remplir les champs du formulaire
+        
         $action = 'modifierEtudiant&idEtud='.htmlspecialchars($_GET['idEtud']);
         $student = $this->modeleEtud->get_studentBD(htmlspecialchars($_GET['idEtud']));
         $numApo = $student['numApogee'];
@@ -62,7 +130,7 @@ class ContEtudiant extends ContGenerique{
         $AnneePromo = $student['anneePromotion'];
         $situationActu = $student['situationActuelle'];
 
-        $etablissements = $this->contEtab->get_etablissement(htmlspecialchars($_GET['idEtud']));
+        $etablissements = $this->contEtab->get_etablissementEtud(htmlspecialchars($_GET['idEtud']));
         
         if($photoEtud == "") $photoEtud = 'bootstrap-icons/icons/person.svg';
         if($dateNaiss == '0000-00-00') $dateNaiss = "";
@@ -76,14 +144,17 @@ class ContEtudiant extends ContGenerique{
         if(empty(htmlspecialchars($_POST['nom'])) || empty(htmlspecialchars($_POST['prenom']))){
             throw new formModifEtudException("Impossible de modifier l'étudiant. Le nom et le prénom ne sont pas définie");
         }
-        //if($this->modeleEtud->student_existBD($_POST['nom'],$_POST['prenom']) != 0)
-        //    throw new formModifEtudException('Impossible de modifier l\'étudiant. Le nom et le prénom ont déjà été attribué à un étudiant. ['.htmlspecialchars($_POST['nom']).' : '.htmlspecialchars($_POST['prenom']).']');
+
+        if($this->modeleEtud->studentModif_existBD($_POST['nom'],$_POST['prenom'],$_GET['idEtud']) != 0)
+            throw new formModifEtudException('Impossible de modifier l\'étudiant. Le nom et le prénom ont déjà été attribué à un étudiant. ['.htmlspecialchars($_POST['nom']).' : '.htmlspecialchars($_POST['prenom']).']');
 
          if(!isset($_GET['idEtud'])) {
             throw new formModifEtudException('identifiant inconnu');
         }
+      
+        $photoEtud = self::fichier_image($_FILES);
+        $this->modeleEtud->update_studentBD(htmlspecialchars($_POST['numApogee']),$photoEtud,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
 
-        $this->modeleEtud->update_studentBD(htmlspecialchars($_POST['numApogee']),$_FILES,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
         htmlspecialchars($_POST['courriel']),htmlspecialchars($_POST['tel']),htmlspecialchars($_POST['adr1']),htmlspecialchars($_POST['adr2']),htmlspecialchars($_POST['anneePromotion']),htmlspecialchars($_POST['situationActuelle']),
         htmlspecialchars($_GET['idEtud']));
 
@@ -91,10 +162,11 @@ class ContEtudiant extends ContGenerique{
         $this->contEtab->update_old_etablissement();
 
         //on rajoute des etablissement à l'étudiant si il y en a des nouveaux
-        $this->contEtab->add_etablissement(htmlspecialchars($_GET['idEtud']));
 
-        //on réaffiche la liste des étudiants
-        self::list_Student();
+        $this->contEtab->add_etablissementEtud(htmlspecialchars($_GET['idEtud']));
+
+        //on réaffiche la liste des étudiants ou le formulaire en focntion de ce qui a été coché
+        self::back_toPage();
     }
 
     function delete_student(){
@@ -103,6 +175,7 @@ class ContEtudiant extends ContGenerique{
     }
     
     public function importer_fichier(){
+
     require('mod_etudiant/vue_etudiant/importer_fichier.php');
    
 }
@@ -277,5 +350,10 @@ $taille1=count($tab[0]);
         }
     return $array1;
 }
+
+public function get_groupes(){
+    // A FAIRE
+}
+
  
 }

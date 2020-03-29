@@ -1,3 +1,4 @@
+
 <div class="container-fluid etablissement" >
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
@@ -17,7 +18,8 @@
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
             <sapn > Type de formation :</span>
-            <textarea name="typeFormation<?=$donnees['idEtablissement']?>" class="form-control z-depth-1" rows="3" placeholder="Que fait l'étudiant dans cette formation" ><?=$donnees['typeFormation']?></textarea>
+            <textarea name="typeFormation<?=$donnees['idEtablissement']?>" class="form-control z-depth-1" rows="3" placeholder="Que fait l'étudiant dans cette formation" ><?=$donnees['infoFormation']?></textarea>
+
             <span> Etablissement : </span><input type="text" name="typeEtab<?=$donnees['idEtablissement']?>" value="<?=$donnees['typeEtab']?>" >
         </div>
 

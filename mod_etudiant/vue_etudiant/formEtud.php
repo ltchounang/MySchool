@@ -81,11 +81,6 @@
             <span id="ajoutEntreprise" typeEtab="entreprise" class="ajoutEtab btn btn-dark boutonAjout" >entreprise +</span>
             
         </div>
-        <div class="conteneurInputEtud shadow-textarea">
-          <label for="info"> Email</label>
-          <textarea class="form-control z-depth-1" name="objet" rows="3" class="infos" value="<?=$objet?>" placeholder="Objet" ></textarea>
-          <textarea class="form-control z-depth-1" name="message" rows="3" class="infos" value="<?=$message?>" placeholder="Message ..." ></textarea>
-        </div>
         <div class="md-form " >
 
 <!-- on affiche les etablissments de l'etudiant si on est entrain de le modifier -->
@@ -98,9 +93,25 @@ if(!empty($etablissements)){
         $nbEtab ++;
     }
 }
+
 ?>
         </div>
-        <button type="submit" class="btn btn-outline-info  btn-block my-4 waves-effect z-depth-0" > Soumettre </button>
+
+    Après l'ajout vous voulez : 
+   <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" class="custom-control-input" id="rester"
+        name="pageRetour" value="<?=$action?>" checked>
+        <label class="custom-control-label" for="rester" >rester sur cette page</label>
+    </div>
+
+    <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" class="custom-control-input" id="lister"
+        name="pageRetour" value="listeEtud">
+        <label class="custom-control-label" for="lister" >retour à la liste</label>
+    </div>
+
+ <button type="submit" class="btn btn-outline-info  btn-block my-4 waves-effect z-depth-0" > Soumettre </button>
+
     </div>
 </form>
             </div>
