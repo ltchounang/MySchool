@@ -1,7 +1,7 @@
 
     <?php
 
-    $basicExampleModal = 'basicExampleModal' . $i // obligatoire pour éviter d'afficher le même étudiant à chaque fois, sinon il fait tjrs appel au même modal (car le même id qui ne changeait jamais)
+    $basicExampleModal = 'basicExampleModal'.$i // obligatoire pour éviter d'afficher le même étudiant à chaque fois, sinon il fait tjrs appel au même modal (car le même id qui ne changeait jamais)
     ?>
     <div class="col-md-12 shadow-sm lighten-4" data-toggle="modal" <?php echo 'data-target=#' . $basicExampleModal?> id="divsEtud" title="cliquez pour avoir plus de détails">
         <div class="container-fluid">
