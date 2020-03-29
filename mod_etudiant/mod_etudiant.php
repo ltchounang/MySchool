@@ -21,8 +21,8 @@ try{
                 
                 case 'importer_fichier':
                         
-                        $contEtudiant->importer_fichier();
-                        break;
+                    $contEtudiant->importer_fichier();
+                    break;
     
                 case 'validation_fichier':
                     
@@ -52,6 +52,10 @@ try{
                 case 'suppEtudiant':
                     $contEtudiant->delete_student();
                 break;
+
+                case 'groupeEtud':
+                    // A FAIRE
+                    break;
 
                 default:
                     $contEtudiant->list_Student();

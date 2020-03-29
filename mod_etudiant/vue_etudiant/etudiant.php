@@ -1,4 +1,9 @@
-    <div class="col-md-12 shadow-sm lighten-4" id="divsEtud">
+
+    <?php
+
+    $basicExampleModal = 'basicExampleModal'.$i // obligatoire pour éviter d'afficher le même étudiant à chaque fois, sinon il fait tjrs appel au même modal (car le même id qui ne changeait jamais)
+    ?>
+    <div class="col-md-12 shadow-sm lighten-4" data-toggle="modal" <?php echo 'data-target=#' . $basicExampleModal?> id="divsEtud" title="cliquez pour avoir plus de détails">
         <div class="container-fluid">
             <div class="row">
             
@@ -39,7 +44,57 @@
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 card-body">
                     <a class=" btn optionMenu " href="index.php?module=etudiant&action=suppEtudiant&idEtud=<?=$donnees['idEtud']?>" ><img  src="bootstrap-icons/icons/trash-fill.svg" alt="+" width="32" height="32" title="Plus"> </a>
                 </div>
+                                <!-- Button trigger modal -->
+                
+                <?php
 
+               // $basicExampleModal = 'basicExampleModal' . $i // obligatoire pour éviter d'afficher le même étudiant à chaque fois, sinon il fait tjrs appel au même modal (car le même id qui ne changeait jamais)
+                ?>
+               <!--  <button type="button" id="boutonDet" class="btn" data-toggle="modal" <?php //echo 'data-target=#' . $basicExampleModal?>>
+                  Plus de détails
+                </button> -->
+
+
+                <!-- Modal -->
+                <div class="modal fade" <?php echo "id=".$basicExampleModal?> tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div  class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">N° Apogée : <?=$donnees['numApogee']?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <!-- Afficher tous les détails de l'étudiant -->
+                        <div><img class="photoEtudBis" name="img" src='<?=$donnees['photoEtud']?>' ></div>
+
+                        <div id="divModal1">
+                            <p class="divModal1P">Nom : <?=$donnees['nomEtud']?></p>
+                            <p class="divModal1P">Prénom : <span class="text-uppercase"><?=$donnees['prenomEtud']?></p>
+                        </div>
+
+                        <div id="divModal2">
+                            <p id="divModal2P">Date de naissance : <?=$donnees['dateNaiss']?></p>
+                        </div>
+
+                        <div id="divModal3">
+                            <p class="divModal1P">Courriel : <?=$donnees['courriel']?></p>
+                            <p class="divModal1P">Numéro de téléphone : <?=$donnees['telEtud']?></p>
+                            <p class="divModal1P">Année de promotion : <?=$donnees['anneePromotion']?></p>
+                            <p class="divModal1P">Adresse 1: <?=$donnees['adr1']?></p>
+                            <p class="divModal1P">Adresse 2: <?=$donnees['adr2']?></p>
+                            <p class="divModal1P">Situation actuelle : <?=$donnees['situationActuelle']?></p>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
         </div>
-    </div> 
+    </div>
+
