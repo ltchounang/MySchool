@@ -1,3 +1,4 @@
+
     <?php
 
     $basicExampleModal = 'basicExampleModal' . $i // obligatoire pour éviter d'afficher le même étudiant à chaque fois, sinon il fait tjrs appel au même modal (car le même id qui ne changeait jamais)
@@ -96,3 +97,4 @@
             </div>
         </div>
     </div>
+

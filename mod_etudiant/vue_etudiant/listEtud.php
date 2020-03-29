@@ -1,11 +1,12 @@
 
 <?php ob_start(); ?>
 
-<?php require('mod_composant/vue_composant/barreRecherche.php'); ?>
+<?php require('mod_composant/vue_composant/barreRechercheEtud.php'); ?>
 
 <div id="resultat-recherche"><!-- contient la liste en voyer --> 
 
 <?php
+
 $i = 0;
 if(!empty($listEtudiant)){
     $tab = $listEtudiant->fetchAll();
@@ -56,5 +57,3 @@ if(!empty($listEtudiant)){
 <?php $content = ob_get_clean(); ?>
 
 <?php require('template.php'); ?>
-
-
