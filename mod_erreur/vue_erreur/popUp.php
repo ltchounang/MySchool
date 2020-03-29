@@ -11,6 +11,7 @@
       <div class="modal-body">
       <?=$message?>
       </div>
+      <?php //if(!empty($action)){ echo '<a href="index.php?module=etudiant&action=suppEtudiant&idEtud="'.$donnees['idEtud'].'" class="btn btn-secondary">supprimer</a>'; } ?>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">fermer</button>
       </div>

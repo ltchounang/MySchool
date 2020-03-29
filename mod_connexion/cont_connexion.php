@@ -94,46 +94,6 @@ class ContConnexion extends ContGenerique{
         header ('Location:index.php?module=connexion&action=formConnexion');
         exit();
     }
-
-    public function form_espace_membre(){
-        $data=$this->modCo->get_responsableBD($_SESSION["identifiant"]);
-        $identifiantResp=$data['identifiant'];
-        require('mod_connexion/vue_connexion/formEspaceMembre.php');
-    }
-
-    public function modifier_resp(){
-        if ((isset($_POST['idResp1']) && !empty($_POST['idResp1'])) && (isset($_POST['modifPw1']) && !empty($_POST['modifPw1'])) && (isset($_POST['modifPw2']) && !empty($_POST['modifPw2']))) {
-            // on teste les deux mots de passee
-
-            $data=$this->modCo->get_responsableBD($_SESSION["identifiant"]);
-            if (password_verify(htmlspecialchars($_POST['modifPw']),$data['motDePasse'])) {
-
-                if ($_POST['modifPw1'] != $_POST['modifPw2']) {
-                    throw new formModifException('les mots de passe saisi sont différents ');
-                }
-                else {
-                    $data=$this->modCo->get_responsableBD(htmlspecialchars($_POST["idResp1"]));
-
-                    if ($data[0] == 0) {
-                        $this->modCo->modif_resp(htmlspecialchars($_POST['idResp1']),htmlspecialchars($_POST['modifPw1']));
-                        $message = 'Vos informations ont bien été prises en compte';
-                        self::form_espace_membre();
-                        require ('mod_erreur/vue_erreur/popUpConfirm.php');
-                    }
-                    else {
-                        throw new formModifException('Ce responsable existe déjà dans la base de donée');
-                    }
-                }
-            }
-            else {
-                throw new formModifException('L\'ancien mot de passe ne correspond pas');
-            }
-        }
-
-        else {
-            throw new formModifException('un des champs est vide !');
-        }
-    }
 }
 
 

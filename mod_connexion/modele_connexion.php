@@ -22,15 +22,6 @@ class ModeleConnexion extends ModeleGenerique{
         $req->execute(array($idResp,$mp));
     }
 
-    public function modif_resp($idResp, $mp){
-        $mdp = password_hash($mp,PASSWORD_DEFAULT);
-
-        $req = self::$bdd->prepare('UPDATE responsable set identifiant=?, motDePasse=? WHERE idResp=?');
-        $req->execute(array($idResp, $mdp, $_SESSION['monid']));
-
-        $_SESSION['identifiant'] = $idResp;
-    }
-
 }
 
 ?>

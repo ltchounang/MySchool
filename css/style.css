@@ -3,7 +3,6 @@
 }
 
 #divsEtud:hover{
-  cursor: pointer;
     background-color:#D1D1D1;
     transition-duration:1s;
 }
@@ -81,13 +80,6 @@ aside{
   
 }
 
-.photoEtudBis{
-  width: 35%;
-  height: 30%;
-  border: 2px solid darkblue;
-  border-radius: 1em;
-}
-
 .boutonAjout{
   border: 2px solid darkblue;border-radius:10px;color:white;padding:5px;
 }
@@ -156,53 +148,4 @@ aside{
 
 #formConnect{
     margin-top:5%;
-}
-
-#boutonDet{
-  background-color: darkgray;
-  font-weight: bold;
-}
-
-#divModal1{
-  
-}
-
-.divModal1P{
-  border-bottom:2px solid #dee2e6;
-}
-
-#divModal2{
-  
-}
-
-#divModal2P{
-  width:100%;
-  border-bottom:2px solid #dee2e6;
-}
-
-#flecheG{
-  width:30px;
-}
-
-#flecheD{
-  width:30px;
-}
-
-#lienPage1{
-  text-decoration: none;
-  padding-right: 40%;
-}
-
-#lienDernierePage{
-  text-decoration: none;
-  float:right;
-}
-
-#lienImgD{
-  float:right;
-  margin-bottom: 1%;
-}
-
-#resultat-recherche{
-  padding-bottom: 1%;
 }
