@@ -1,4 +1,4 @@
-<?php require_once('import.php'); ?>
+
 
 <!-- Bar de navigation en haut -->
 <nav class="mb-2 navbar navbar-expand-lg navbar-dark default-color-dark lighten-1">

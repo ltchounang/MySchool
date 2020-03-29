@@ -9,12 +9,17 @@ class formAjoutEtudException extends Exception {};
 class formModifEtudException extends Exception {};
 class formCoException extends Exception {};
 class formInsException extends Exception {};
+class formAjoutEtabException extends Exception {};
+class formModifEtudEtabException extends Exception {};
 
 try {
     if(isset($_SESSION['monid'])){
         if(isset($_GET['module']) ){
             if($_GET['module']=='etudiant'){
                 require_once('mod_etudiant/mod_etudiant.php');
+            }
+            elseif($_GET['module']=='etablissement'){
+                require_once('mod_etablissement/mod_etablissement.php');
             }
             elseif($_GET['module']=='connexion'){
                 require_once('mod_connexion/mod_connexion.php');
@@ -32,7 +37,7 @@ try {
     }
 }
 catch(Exception $e){
-    echo $e->getMessage();
+    $messErreur = $e->getMessage();
 }
 finally {
     require_once('mod_erreur/mod_erreur.php');

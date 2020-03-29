@@ -1,7 +1,7 @@
 
 <?php ob_start(); ?>
 
-<?php require('mod_composant/vue_composant/barreRecherche.php'); ?>
+<?php require('mod_composant/vue_composant/barreRechercheEtud.php'); ?>
 
 <div id="resultat-recherche"><!-- contient la liste en voyer --> 
 
