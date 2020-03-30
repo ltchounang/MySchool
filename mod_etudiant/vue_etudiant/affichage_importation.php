@@ -2,35 +2,32 @@
 
 <?php require_once 'import.php';?> 
 	<article id="articleGestion" >
-    <h2>Voici votre importation</h2>
+
+    <h2><?php echo $h2;?></h2>
     <div id=divImportation>
-	<?php	for ($i=0; $i <count($tab) ; $i++) { ?>
-              
-              
-                
+	<div class="table-wrapper-scroll-y my-custom-scrollbar">
 
-                        
+          <table class="table table-bordered table-striped mb-0">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">N° etudiant</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+              </tr>
+            </thead>
+            <tbody>
+                <?php   for ($i=0; $i <count($tab) ; $i++) { ?>
+              <tr>
+                <th scope="row"><?php echo $i+1; ?></th>
+                <td><?php echo $tab[$i]['numéroétudiantapogée'];?></td>
+                <td> <?php echo $tab[$i]['nom'];?></td>
+                <td><?php echo $tab[$i]['prénom'];}?></td>
+              </tr>
+            </tbody>
+          </table>
 
-                            <div id=divImportation1>
-                                <strong>prenom : <?php echo $tab[$i]['Prénom'];?></strong> <br /> 
-                                <strong>nom : <?php echo $tab[$i]['Nom'];?></strong> <br /> 
-                                <p class="card-text">mail : <?php echo $tab[$i]['Courriel personnel'];?></p>
-                                <p class="card-text">numéro de téléphone : <?php echo $tab[$i]['telephone annuel'];?></p>
-                            </div>
-
-                            <?php }?>
+    </div>
                             
-                        </div>
-
-                        <form action="index.php?module=etudiant&action=validation_mail" method="post">
-                            <p>Envoyez un mail aux etudiants pour les mettre au courant</p>
-                            <p>Note: pour ecrire le nom ou le prenom de l\etudiant entrez [nom] ou [prenom]<p>
-                            <p>Exemple : Bonjour,[prenom][nom] => Bonjour,Phillipe Bonnot</p>
-                            <label for="sujet"> Objet : </label></br>
-                            <input type="text" placeholder="objet du mail" id="sujet" name="sujet"></br>
-                            <label for="message"> Message : </label></br>
-                            <textarea id="message" name="message" rows="10" cols="60" placeholder="contenu ..."></textarea></br>
-                            <input type="submit" id="envoi" name="envoi" value="ok">
-                        </form>  </article>
-<?php $content = ob_get_clean(); ?>
-<?php require('template.php'); ?>
+ </div>
+</br></br>

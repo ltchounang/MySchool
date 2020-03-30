@@ -1,3 +1,4 @@
+
 <?php
 
 require_once 'mod_generique/modele_generique.php';

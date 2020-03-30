@@ -1,4 +1,5 @@
 
+
 <?php ob_start(); ?>
 
 <?php require('mod_composant/vue_composant/barreRecherche.php'); ?>

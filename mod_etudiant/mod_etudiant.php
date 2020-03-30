@@ -1,3 +1,4 @@
+
 <?php
 if(!defined ('CONSTANT') )
     die ('acces interdit') ;
@@ -19,7 +20,7 @@ try{
                     $contEtudiant->form_addEtud();
                 break;
                 
-                case 'importer_fichier':
+                 case 'importer_fichier':
                         
                         $contEtudiant->importer_fichier();
                         break;
@@ -31,6 +32,7 @@ try{
                 case 'validation_mail':
                     $contEtudiant->validation_mail();
                     break;
+                    
                     
                 case 'ajouterEtudiant':
                     
