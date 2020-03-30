@@ -6,10 +6,10 @@
         <div class="row" style="padding-top:2%;">
 
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" >
-                <span> Type : </span><input type="text" name="typeEtab" value="<?=$typeEtab?>" >
+                <span> Type : </span><input type="text" name="typeEtab" value="<?=$typeEtab?>" require>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6  ">
-                    <span>Nom : </span><input name="nomEtab" type="text" value="<?=$nomEtab?>" placeholder="nom de l'etablissement" class=""></br>
+                    <span>Nom : </span><input name="nomEtab" type="text" value="<?=$nomEtab?>" placeholder="nom de l'etablissement" class="" require></br>
             </div>
         
             <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 " style="padding-top:2%;">

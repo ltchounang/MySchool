@@ -25,6 +25,9 @@ try {
             if($_GET['module']=='etudiant'){
                 require_once('mod_etudiant/mod_etudiant.php');
             }
+            elseif($_GET['module']=='etablissement'){
+                require_once('mod_etablissement/mod_etablissement.php');
+            }
             elseif($_GET['module']=='connexion'){
                 require_once('mod_connexion/mod_connexion.php');
             }

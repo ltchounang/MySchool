@@ -1,4 +1,5 @@
-<div class="col-md-12 shadow-sm lighten-4" id="divsEtud">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 shadow-sm lighten-4" id="divsEtud">
+<a href="index.php?module=etablissement&action=detailEtab&idEtab=<?=$donnees['idEtablissement']?>" style=" text-decoration: none;">
         <div class="container-fluid">
             <div class="row">
 
@@ -27,4 +28,5 @@
 
         </div>
     </div>
+</a>
 </div> 

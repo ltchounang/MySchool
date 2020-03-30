@@ -62,17 +62,17 @@
 
         <div class="conteneurInputEtud shadow-textarea">
           <label for="info"> Adresse 1</label>
-          <textarea class="form-control z-depth-1" name="adr1" rows="3" class="infos" value="<?=$adrr1?>" placeholder="adresse 1" ></textarea>
+          <textarea class="form-control z-depth-1" name="adr1" rows="3" class="infos" placeholder="adresse 1" ><?=$adrr1?></textarea>
         </div>
 
         <div class="conteneurInputEtud shadow-textarea">
           <label  for="info">Adresse 2 </label> <span id="adresse2" class="btn btn-dark boutonAjout" >+</span>
-          <textarea id="contenuAdresse2" class="form-control z-depth-1" name="adr2" value="<?=$adrr2?>" style="display:none;" rows="3" placeholder="adresse 2" ></textarea>
+          <textarea id="contenuAdresse2" class="form-control z-depth-1" name="adr2" style="display:none;" rows="3" placeholder="adresse 2" ><?=$adrr2?></textarea>
         </div>
 
         <div class="conteneurInputEtud shadow-textarea">
           <label  for="info">Situation actuelle </label> <span id="situationActuelle" class="btn btn-dark boutonAjout" >+</span>
-          <textarea id="contenuSituationActuelle" name="situationActuelle" value="<?=$situationActu?>" class="form-control z-depth-1" style="display:none;" rows="3" class="infos" placeholder="situation actuelle" ></textarea>
+          <textarea id="contenuSituationActuelle" name="situationActuelle" class="form-control z-depth-1" style="display:none;" rows="3" class="infos" placeholder="situation actuelle" ><?=$situationActu?></textarea>
         </div>
 
         <div  id="formEtab" class="md-form conteneurInputEtud" >

@@ -36,12 +36,15 @@ class ContEtablissement extends ContGenerique{
 
     function form_updateEtab(){//on initialise les variables pour remplir les champs du formulaire
 
-        $action = 'modifierEtab&idEtab='.htmlspecialchars($_GET['idEtab']);
-        $etab = $this->modeleEtab->get_EtablissementBD(htmlspecialchars($_GET['idEtab']));
-       
+        if(isset($_GET['idEtab']))
+            $idEtab = 1;
+
+        $action = 'modifierEtab&idEtab='.htmlspecialchars();
+        $etab = $this->modeleEtab->get_EtablissementBD(htmlspecialchars($idEtab));
+        
         $typeEtab = $etab['typeEtab'];
         $nomEtab = $etab['nomEtablissement'];
-
+        
         require('mod_etablissement/vue_etablissement/formulaireEtab.php');
 
     }
@@ -110,10 +113,24 @@ class ContEtablissement extends ContGenerique{
         }
     }
 
+    public function supp_EtabDeEtudiantBD($idEtud,$idEtab){
+        $this->modeleEtab->supp_EtabDeEtudiantBD($idEtud,$idEtab);
+    }
+
+    public function detail_Etab(){
+        $etab = $this->modeleEtab->get_EtablissementBD(htmlspecialchars($_GET['idEtab']));
+        $listEtudiant = $this->modeleEtab->get_EtudiantEtabBD(htmlspecialchars($_GET['idEtab']));
+        
+        $detail = 'etablissement';
+        $typeEtab = $etab['typeEtab'];
+        $nomEtab = $etab['nomEtablissement'];
+
+        require('mod_etablissement/vue_etablissement/detailEtab.php');
+
+    }
+
     public function delete_etab(){
         $this->modeleEtab->delete_etabBD(htmlspecialchars($_GET['idEtab']));
         self::liste_Etablissement();
     }
- 
-
 }
