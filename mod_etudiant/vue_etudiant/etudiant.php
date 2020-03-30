@@ -1,7 +1,8 @@
 
     <?php
 
-    $basicExampleModal = 'basicExampleModal'.$i // obligatoire pour éviter d'afficher le même étudiant à chaque fois, sinon il fait tjrs appel au même modal (car le même id qui ne changeait jamais)
+    $basicExampleModal = 'basicExampleModal' . $i // obligatoire pour éviter d'afficher le même étudiant à chaque fois, sinon il fait tjrs appel au même modal (car le même id qui ne changeait jamais)
+
     ?>
     <div class="col-md-12 shadow-sm lighten-4" data-toggle="modal" <?php echo 'data-target=#' . $basicExampleModal?> id="divsEtud" title="cliquez pour avoir plus de détails">
         <div class="container-fluid">
@@ -42,7 +43,9 @@
                     <a class=" btn optionMenu " href="index.php?module=etudiant&action=formModifEtud&idEtud=<?=$donnees['idEtud']?>"  ><img src="bootstrap-icons/icons/pencil.svg" alt="+" width="32" height="32" title="Plus"> </a>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 card-body">
-                    <a class=" btn optionMenu " href="index.php?module=etudiant&action=suppEtudiant&idEtud=<?=$donnees['idEtud']?>" ><img  src="bootstrap-icons/icons/trash-fill.svg" alt="+" width="32" height="32" title="Plus"> </a>
+
+                    <a class=" btn optionMenu " href="index.php?module=etudiant&action=suppEtudiant&idEtud=<?=$donnees['idEtud']?>&idGroupe=<?=$idGroupe?>" ><img  src="bootstrap-icons/icons/trash-fill.svg" alt="+" width="32" height="32" title="Plus"> </a>
+
                 </div>
                                 <!-- Button trigger modal -->
                 

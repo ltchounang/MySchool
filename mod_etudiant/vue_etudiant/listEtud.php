@@ -1,6 +1,13 @@
 
 
+
 <?php if(empty($detail)){ob_start();require('mod_composant/vue_composant/barreRechercheEtud.php');} ?>
+
+
+<?php 
+if ($idGroupe != 0)
+    echo '<h1 style="text-align:center;">Groupe étudiant : '.$nomGroupe['nomGroupe'].'</h1>';
+ ?>
 
 <div id="resultat-recherche"><!-- contient la liste en voyer --> 
 
@@ -32,6 +39,7 @@ if(!empty($listEtudiant)){
             echo '<a href="index.php?module=etudiant&action=listeEtudiant&page='.$i.'">'.$i.'</a>' . ' ';
     }*/
 
+
     if(empty($detail)){
         if (!isset($_GET['page']) or $_GET['page'] == 1) {
             echo '<a id="lienImgD" onmouseover="changeImgD()" onmouseleave="defaultImgD()" href="index.php?module=etudiant&action=listeEtudiant&page=2" title="page suivante"><img id="flecheD" src="ressources/imgSite/logos/gestion/suivant.png" /></a>';
@@ -49,9 +57,11 @@ if(!empty($listEtudiant)){
         }
     }
 
+
 }
 ?>
 
 </div>
 
 <?php if(empty($detail)){$content = ob_get_clean();require('template.php'); }?>
+

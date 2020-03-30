@@ -1,3 +1,4 @@
+
 <?php
 header('Content-type: application/json');
 $doc_root = $_SERVER['DOCUMENT_ROOT'];

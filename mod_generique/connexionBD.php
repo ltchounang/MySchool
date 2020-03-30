@@ -1,3 +1,4 @@
+
 <?php
 
  try
@@ -9,4 +10,5 @@
  {
          die('Erreur : '.$e->getMessage());
          echo "Erreur : impossible de se connecter à la base de donnée";
+
  }

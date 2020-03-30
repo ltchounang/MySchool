@@ -21,8 +21,8 @@
             <textarea name="typeFormation<?=$donnees['idEtablissement']?>" class="form-control z-depth-1" rows="3" placeholder="Que fait l'étudiant dans cette formation" ><?=$donnees['infoFormation']?></textarea>
 
             <span> Etablissement : </span><input type="text" name="typeEtab<?=$donnees['idEtablissement']?>" value="<?=$donnees['typeEtab']?>" >
+
             <a href="index.php?module=etudiant&action=suppEtabDeEtudiant&idEtud=<?=$donnees['idEtud']?>&idEtab=<?=$donnees['idEtablissement']?>" class="btn  " role="button" > supprimer <img src="bootstrap-icons/icons/Building.svg" alt="..." width="32" height="32" title="Building"> </a>
-            
 
         </div>
 

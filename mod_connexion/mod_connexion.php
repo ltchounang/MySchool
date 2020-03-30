@@ -1,3 +1,4 @@
+
 <?php
 if(!defined ('CONSTANT') )
 die ('acces interdit') ;

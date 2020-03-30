@@ -130,5 +130,4 @@ class ContEtablissement extends ContGenerique{
         $this->modeleEtab->delete_etabBD(htmlspecialchars($_GET['idEtab']));
         self::liste_Etablissement();
     }
- 
 }
