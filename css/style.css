@@ -205,4 +205,43 @@ aside{
 
 #resultat-recherche{
   padding-bottom: 1%;
+
+}
+
+.groupeEtud{
+  padding: 5px;
+  margin-right: 3%;
+  margin-bottom: 3%;
+  font-weight: bold;
+  text-align: center;
+  transition-duration: 1s;
+}
+
+.groupeEtud:hover{
+  background-color: #D1D1D1;
+  cursor: pointer;
+}
+
+#supprGroupe{
+  text-decoration: none;
+  color:gray;
+  float: right;
+  margin-top:-1%;
+}
+
+#supprGroupe:hover{
+  color: red;
+}
+
+.lienGroupes{
+  padding-right: 40%;
+  padding-left: 40%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
+.lienGroupes2{
+  position: absolute;
+  margin-left: -10%;
+  color:black;
 }

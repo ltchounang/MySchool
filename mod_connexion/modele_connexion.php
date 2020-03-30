@@ -1,3 +1,4 @@
+
 <?php
 
 require_once 'mod_generique/modele_generique.php';
@@ -9,15 +10,8 @@ class ModeleConnexion extends ModeleGenerique{
     }
 
     public function get_responsableBD($idResp){
-        $req = self::$bdd->prepare('SELECT * FROM responsable WHERE identifiant = ? ');
+        $req = self::$bdd->prepare('SELECT * FROM responsable WHERE identifiant = ?');
         $req->execute(array($idResp));
-
-        return $donnees = $req->fetch();
-    }
-
-    public function get_responsableExistBD($idResp,$idMembre){
-        $req = self::$bdd->prepare('SELECT * FROM responsable WHERE identifiant = ? and identifiant != ?');
-        $req->execute(array($idResp,$idMembre));
 
         return $donnees = $req->fetch();
     }

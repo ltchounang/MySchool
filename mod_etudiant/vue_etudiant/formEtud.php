@@ -93,10 +93,20 @@ if(!empty($etablissements)){
         $nbEtab ++;
     }
 }
-
 ?>
         </div>
-
+  <span>Attribuer un groupe à l'étudiant :</span>
+        <select name="selectGroupe">
+            <option>Sélectionner un groupe d'étudiant</option>
+            <?php
+                if (!empty($groupes)) {
+                    $grp = $groupes->fetchAll();
+                    foreach ($grp as $donnees) {
+                        echo '<option value="'.$donnees['idGroupe'].'">'.$donnees['nomGroupe'].'</option>';
+                    }
+                }
+            ?>
+        </select>
     Après l'ajout vous voulez : 
    <div class="custom-control custom-radio custom-control-inline">
         <input type="radio" class="custom-control-input" id="rester"

@@ -107,6 +107,7 @@ class ContConnexion extends ContGenerique{
             $idresp1 = htmlspecialchars($_POST["idResp1"]);
             $idmembre = htmlspecialchars($_GET["idMembre"]);
             $modifPw1 = htmlspecialchars($_POST['modifPw1']);
+
             $data=$this->modCo->get_responsableBD($_SESSION["identifiant"]);
             if (password_verify(htmlspecialchars($_POST['modifPw']),$data['motDePasse'])) {
 
@@ -114,10 +115,11 @@ class ContConnexion extends ContGenerique{
                     throw new formModifException('les mots de passe saisi sont différents ');
                 }
                 else {
-                    $data=$this->modCo->get_responsableExistBD($idresp1,$idmembre);
+
+                    $data=$this->modCo->get_responsableBD(htmlspecialchars($_POST["idResp1"]));
 
                     if ($data[0] == 0) {
-                        $this->modCo->modif_resp($idresp1,$modifPw1);
+                        $this->modCo->modif_resp(htmlspecialchars($_POST['idResp1']),htmlspecialchars($_POST['modifPw1']));
                         $message = 'Vos informations ont bien été prises en compte';
                         self::form_espace_membre();
                         require ('mod_erreur/vue_erreur/popUpConfirm.php');

@@ -54,10 +54,12 @@ class ContEtudiant extends ContGenerique{
     } 
 
 
+
     function form_addEtud(){
         $action = 'ajouterEtudiant';
         $photoEtud = 'bootstrap-icons/icons/person.svg';
         $numApo = $nomEtud = $prenom = $dateNaiss = $courriel = $tel = $adrr1 = $adrr2 = $AnneePromo = $situationActu = $etablissements = "";
+        $groupes = $this->modeleEtud->get_groupes();
         require('mod_etudiant/vue_etudiant/formEtud.php');
     }
 
@@ -67,55 +69,39 @@ class ContEtudiant extends ContGenerique{
 
         if($this->modeleEtud->student_existBD(htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom'])) != 0)
             throw new formAjoutEtudException('Impossible d\'ajouter l\'étudiant. Le nom et le prénom ont déjà été attribué à un étudiant. ['.htmlspecialchars($_POST['nom']).' : '.htmlspecialchars($_POST['prenom']).']');
-            $photoEtud = self::fichier_image($_FILES);
-        
-      $idEtud = $this->modeleEtud->add_studentBD(htmlspecialchars($_POST['numApogee']),$photoEtud,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
+
+
+        $idEtud = $this->modeleEtud->add_studentBD(htmlspecialchars($_POST['numApogee']),$_FILES,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
         htmlspecialchars($_POST['courriel']),htmlspecialchars($_POST['tel']),htmlspecialchars($_POST['adr1']),htmlspecialchars($_POST['adr2']),htmlspecialchars($_POST['anneePromotion']),htmlspecialchars($_POST['situationActuelle']));
 
-        $this->contEtab->add_etablissementEtud($idEtud);
-
-        self::back_toPage();
+        $this->modeleEtud->add_etud_groupe($idEtud,$_POST['selectGroupe']);
+        $this->contEtab->add_etablissement($idEtud);
+        self::list_Student(0);
     }
 
-    function list_Student(){
+    function list_Student($idGroupe){
         $nbEtudiants = $this->modeleEtud->nb_students();
-        
+        $nomGroupe = $this->modeleEtud->get_groupe_name($idGroupe);
         $nbPagesTotales = ceil($nbEtudiants/10);
         
         if (isset($_GET['page']) and !empty($_GET['page'])) {
             $page = $_GET['page'];
 
-            $listEtudiant = $this->modeleEtud->get_Students($page);
+            $listEtudiant = $this->modeleEtud->get_Students($page, $idGroupe);
 
             require('mod_etudiant/vue_etudiant/listEtud.php');
         }
         else {
             $page = 1;
-            $listEtudiant = $this->modeleEtud->get_Students($page);
+            $listEtudiant = $this->modeleEtud->get_Students($page, $idGroupe);
 
             require('mod_etudiant/vue_etudiant/listEtud.php');
         }
-    }
-    
-    function back_toPage(){
-        if(isset($_POST['pageRetour'])){
-            if($_POST['pageRetour'] == "ajouterEtudiant"){
-                self::form_addEtud();
-            }
-            elseif($_POST['pageRetour'] != "listeEtud"){
-                self::form_updateEtud();
-            }
-            else{
-                self::list_Student();
-            }
-        }
-        else{
-            self::list_Student();
-        }
-    }
-  
-    function form_updateEtud(){//on initialise les variables pour remplir les champs du formulaire
         
+    }
+
+    function form_updateEtud(){
+        //on initialise les variables pour remplir les champs du formulaire
         $action = 'modifierEtudiant&idEtud='.htmlspecialchars($_GET['idEtud']);
         $student = $this->modeleEtud->get_studentBD(htmlspecialchars($_GET['idEtud']));
         $numApo = $student['numApogee'];
@@ -130,13 +116,14 @@ class ContEtudiant extends ContGenerique{
         $AnneePromo = $student['anneePromotion'];
         $situationActu = $student['situationActuelle'];
 
-        $etablissements = $this->contEtab->get_etablissementEtud(htmlspecialchars($_GET['idEtud']));
+        $etablissements = $this->contEtab->get_etablissement(htmlspecialchars($_GET['idEtud']));
         
         if($photoEtud == "") $photoEtud = 'bootstrap-icons/icons/person.svg';
         if($dateNaiss == '0000-00-00') $dateNaiss = "";
         if($numApo == 0) $numApo = "";
         if($tel == 0) $tel = "" ;
         
+        $groupes = $this->modeleEtud->get_groupes();
         require('mod_etudiant/vue_etudiant/formEtud.php');
     }
 
@@ -148,30 +135,31 @@ class ContEtudiant extends ContGenerique{
         if($this->modeleEtud->studentModif_existBD($_POST['nom'],$_POST['prenom'],$_GET['idEtud']) != 0)
             throw new formModifEtudException('Impossible de modifier l\'étudiant. Le nom et le prénom ont déjà été attribué à un étudiant. ['.htmlspecialchars($_POST['nom']).' : '.htmlspecialchars($_POST['prenom']).']');
 
+
          if(!isset($_GET['idEtud'])) {
             throw new formModifEtudException('identifiant inconnu');
         }
       
         $photoEtud = self::fichier_image($_FILES);
         $this->modeleEtud->update_studentBD(htmlspecialchars($_POST['numApogee']),$photoEtud,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
-
         htmlspecialchars($_POST['courriel']),htmlspecialchars($_POST['tel']),htmlspecialchars($_POST['adr1']),htmlspecialchars($_POST['adr2']),htmlspecialchars($_POST['anneePromotion']),htmlspecialchars($_POST['situationActuelle']),
         htmlspecialchars($_GET['idEtud']));
 
         //on modifi les etablissement qui existait déjà chez l'étudiant
         $this->contEtab->update_old_etablissement();
-
+        $this->modeleEtud->add_etud_groupe($_GET['idEtud'],$_POST['selectGroupe']);
         //on rajoute des etablissement à l'étudiant si il y en a des nouveaux
 
         $this->contEtab->add_etablissementEtud(htmlspecialchars($_GET['idEtud']));
 
-        //on réaffiche la liste des étudiants ou le formulaire en focntion de ce qui a été coché
-        self::back_toPage();
+
+        //on réaffiche la liste des étudiants
+        self::list_Student(0);
     }
 
-    function delete_student(){
-        $this->modeleEtud->delete_studentBD(htmlspecialchars($_GET['idEtud']));
-        self::list_Student();
+    function delete_student($id){
+        $this->modeleEtud->delete_studentBD(htmlspecialchars($_GET['idEtud']),$id);
+        self::list_Student($id);
     }
     
     public function importer_fichier(){
@@ -248,8 +236,13 @@ public function verification_des_attributs($attr){
             if(!in_array(str_replace(' ', '',strtolower(($attr[0][$i]))),$attribut)){ // if false
                 if($attr[0][$i]!=NULL)
                     array_push($faux,$attr[0][$i]);
+
             }
+        }else{
+            require('mod_etudiant/vue_etudiant/confirmation_mail.php');
         }
+        
+        
     }
     return $faux;
 }
@@ -270,12 +263,14 @@ public function premiere_ligne_correct($line){
 public function validation_fichier(){
      if(isset($_FILES)){
 
+
             $nomfichier = $_FILES['fileToUpload']['name']; 
             $extension = strrchr($nomfichier, "."); 
             $tmp_fich = $_FILES['fileToUpload']['tmp_name'];
             $extensions_autorisees = array('.csv');
             if ($_FILES['fileToUpload']['error'] == 0) {
                 if(in_array($extension, $extensions_autorisees)){
+
                     $line=self::lecture_fichier($tmp_fich);
                     if(self::premiere_ligne_correct($line)){
                         $tab=self::convertisseur_tableau_en_array_par_ligne($line);
@@ -353,6 +348,31 @@ $taille1=count($tab[0]);
 
 public function get_groupes(){
     // A FAIRE
+}
+
+
+public function creer_groupe(){
+    if (isset($_POST['nomGroupe']) and !empty($_POST['nomGroupe'])){
+        $nomExists = $this->modeleEtud->groupe_exists(htmlspecialchars($_POST['nomGroupe']));
+        if ($nomExists == 0) {
+            $this->modeleEtud->creer_groupe($_POST['nomGroupe']);
+            self::liste_groupe_etud();
+        }
+        else {
+           throw new formGroupeException('Le nom de groupe est déjà existant');
+        }
+    }
+}
+
+public function liste_groupe_etud(){
+    $listeGroupe = $this->modeleEtud->get_groupes();
+    $mod=$this->modeleEtud;
+    require('mod_etudiant/vue_etudiant/groupeEtude.php');
+}
+
+public function supprimer_groupe($idGroupe) {
+    $this->modeleEtud->supprimer_groupe($idGroupe);
+    self::liste_groupe_etud();
 }
 
  

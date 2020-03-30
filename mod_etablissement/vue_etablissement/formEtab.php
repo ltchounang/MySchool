@@ -27,4 +27,5 @@
 
     </div>
 </div>
+
 <!--  On pourrait rajouter un bouton supprimer etablissement ici -->

@@ -39,7 +39,11 @@ if(!empty($messErreur)){
             case 'form_addEtab':
                 $contEtablissement->form_addEtab();
                  break;
- 
+            
+             case 'listeGroupeEtud':
+                $contEtudiant->liste_groupe_etud();
+                break;
+            
             case 'importer_fichier':
                 $contEtudiant->importer_fichier();
             break;
