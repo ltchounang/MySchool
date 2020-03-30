@@ -21,8 +21,8 @@ try{
                 
                 case 'importer_fichier':
                         
-                    $contEtudiant->importer_fichier();
-                    break;
+                        $contEtudiant->importer_fichier();
+                        break;
     
                 case 'validation_fichier':
                     
@@ -38,7 +38,11 @@ try{
                 break;
 
                 case 'listeEtudiant':
-                    $contEtudiant->list_Student();
+                    if (isset($_GET['idGroupe']))
+                        $idGroupe = $_GET['idGroupe'];
+                    else
+                        $idGroupe = 0;
+                    $contEtudiant->list_Student($idGroupe);
                 break;
 
                 case 'formModifEtud':
@@ -50,20 +54,32 @@ try{
                 break;
 
                 case 'suppEtudiant':
-                    $contEtudiant->delete_student();
+                    if (isset($_GET['idGroupe'])) {
+                        $id = $_GET['idGroupe'];
+                        $contEtudiant->delete_student($id);
+                        }
                 break;
 
-                case 'groupeEtud':
-                    // A FAIRE
+                case 'listeGroupeEtud':
+                    $contEtudiant->liste_groupe_etud();
                     break;
 
+                case 'creerGroupe':
+                    $contEtudiant->creer_groupe();
+                    break;
+
+                case 'supprimerGroupe':
+                    if (isset($_GET['idGroupe'])) {
+                        $contEtudiant->supprimer_groupe($_GET['idGroupe']);
+                    }
+                    break;
                 default:
-                    $contEtudiant->list_Student();
+                    $contEtudiant->list_Student(0);
                 break;
             }
         }
         else{
-            $contEtudiant->list_Student();
+            $contEtudiant->list_Student(0);
         }
     }
 }catch(formAjoutEtudException $e){
@@ -73,4 +89,8 @@ try{
 catch(formModifEtudException $e){
     $messErreur = $e->getMessage();
     $page = 'formModifEtud';
+}
+catch(formGroupeException $e){
+    $messErreur = $e->getMessage();
+    $page = 'listeGroupeEtud';
 }

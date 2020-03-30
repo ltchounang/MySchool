@@ -93,25 +93,23 @@ if(!empty($etablissements)){
         $nbEtab ++;
     }
 }
-
 ?>
         </div>
 
-    Après l'ajout vous voulez : 
-   <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" class="custom-control-input" id="rester"
-        name="pageRetour" value="<?=$action?>" checked>
-        <label class="custom-control-label" for="rester" >rester sur cette page</label>
-    </div>
+        <span>Attribuer un groupe à l'étudiant :</span>
+        <select name="selectGroupe">
+            <option>Sélectionner un groupe d'étudiant</option>
+            <?php
+                if (!empty($groupes)) {
+                    $grp = $groupes->fetchAll();
+                    foreach ($grp as $donnees) {
+                        echo '<option value="'.$donnees['idGroupe'].'">'.$donnees['nomGroupe'].'</option>';
+                    }
+                }
+            ?>
+        </select>
 
-    <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" class="custom-control-input" id="lister"
-        name="pageRetour" value="listeEtud">
-        <label class="custom-control-label" for="lister" >retour à la liste</label>
-    </div>
-
- <button type="submit" class="btn btn-outline-info  btn-block my-4 waves-effect z-depth-0" > Soumettre </button>
-
+        <button type="submit" class="btn btn-outline-info  btn-block my-4 waves-effect z-depth-0" > Soumettre </button>
     </div>
 </form>
             </div>

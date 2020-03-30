@@ -12,58 +12,7 @@ class ContEtablissement extends ContGenerique{
         $this->modeleEtab = new ModeleEtablissement();
     }
 
-    public function form_addEtab(){
-        $action = 'ajouterEtablissement';
-        $typeEtab = "";
-        $nomEtab = "";
-        require('mod_etablissement/vue_etablissement/formulaireEtab.php');
-    }
-
-    public function add_etablissement(){
-        if(empty(htmlspecialchars($_POST['nomEtab'])) || empty(htmlspecialchars($_POST['typeEtab'])))
-            throw new formAjoutEtabException("Impossible d'ajouter l'établissement. Le nom ou le type n'a pas été définie");
-        else{
-            $nomEtab = htmlspecialchars($_POST['nomEtab']);
-            $typeEtab = htmlspecialchars($_POST['typeEtab']);
-        } 
-        if($this->modeleEtab->etab_existBD($nomEtab,$typeEtab,"") != 0)
-            throw new formAjoutEtabException('Impossible d\'ajouter l\'établissement car le nom et le type existent déjà. ['.$nomEtab.'] : ['.$typeEtab.']');
-
-        $this->modeleEtab->add_EtabBD($nomEtab,$typeEtab);
-
-        self::back_toPage();
-    }
-
-    function form_updateEtab(){//on initialise les variables pour remplir les champs du formulaire
-
-        $action = 'modifierEtab&idEtab='.htmlspecialchars($_GET['idEtab']);
-        $etab = $this->modeleEtab->get_EtablissementBD(htmlspecialchars($_GET['idEtab']));
-       
-        $typeEtab = $etab['typeEtab'];
-        $nomEtab = $etab['nomEtablissement'];
-
-        require('mod_etablissement/vue_etablissement/formulaireEtab.php');
-
-    }
-
-    function back_toPage(){
-        if(isset($_POST['pageRetour'])){
-            if($_POST['pageRetour'] == "ajouterEtablissement"){
-                self::form_addEtab();
-            }
-            elseif($_POST['pageRetour'] != "lister"){
-                self::form_updateEtab();
-            }
-            else{
-                self::liste_Etablissement();
-            }
-        }
-        else{
-            self::liste_Etablissement();
-        }
-    }
-
-    public function add_etablissementEtud($idEtud){
+    public function add_etablissement($idEtud){
         $nbEtab = 1;
         while(isset($_POST['nomEtab'.$nbEtab])){
             $this->modeleEtab->add_etablissementBD(htmlspecialchars($_POST['nomEtab'.$nbEtab]),htmlspecialchars($_POST['typeEtab'.$nbEtab]),
@@ -72,47 +21,20 @@ class ContEtablissement extends ContGenerique{
         }
     }
 
-    public function liste_Etablissement(){
-        $listeEtablissement = $this->modeleEtab->get_etablissementsBD();
-        $options = '<option class="filtre" value="etudiant">etudiant</option>';
-
-        require_once('mod_etablissement/vue_etablissement/listeEtablissement.php');
+    public function get_etablissement($idEtud){
+        return $this->modeleEtab->get_etablissementBD($idEtud);
     }
-
-    public function get_etablissementEtud($idEtud){
-        return $this->modeleEtab->get_etablissementEtudBD($idEtud);
-    }
-
-    function update_EtabBD(){
-        if(empty(htmlspecialchars($_POST['nomEtab'])) || empty(htmlspecialchars($_POST['typeEtab'])))
-            throw new formModifEtabException("Impossible d'ajouter l'établissement. Le nom ou le type n'a pas été définie");
-        else{
-            $nomEtab = htmlspecialchars($_POST['nomEtab']);
-            $typeEtab = htmlspecialchars($_POST['typeEtab']);
-            $idEtab = htmlspecialchars($_GET['idEtab']);
-        } 
-
-        if($this->modeleEtab->etab_existBD($nomEtab,$typeEtab,$idEtab) != 0)
-            throw new formModifEtabException('Impossible d\'ajouter l\'établissement car le nom et le type existent déjà. ['.$nomEtab.'] : ['.$typeEtab.']');
-
-        $this->modeleEtab->update_etablissementBD($nomEtab,$typeEtab,$idEtab);
-
-        self::back_toPage();
-    }
-
+    
     public function update_old_etablissement(){
         $nbEtab = 1;
         while(isset($_POST['old-idEtab'.$nbEtab])){
             $idEtab = htmlspecialchars($_POST['old-idEtab'.$nbEtab]);
-            $this->modeleEtab->update_etablissementEtudBD(htmlspecialchars($_POST['nomEtab'.$idEtab]),htmlspecialchars($_POST['typeEtab'.$idEtab]),
+            $this->modeleEtab->update_etablissementBD(htmlspecialchars($_POST['nomEtab'.$idEtab]),htmlspecialchars($_POST['typeEtab'.$idEtab]),
             htmlspecialchars($_POST['dateDeb'.$idEtab]),htmlspecialchars($_POST['dateFin'.$idEtab]),htmlspecialchars($_POST['typeFormation'.$idEtab]),$idEtab,htmlspecialchars($_GET['idEtud']));
             $nbEtab ++;
         }
     }
 
-    public function delete_etab(){
-        $this->modeleEtab->delete_etabBD(htmlspecialchars($_GET['idEtab']));
-        self::liste_Etablissement();
-    }
+
  
 }

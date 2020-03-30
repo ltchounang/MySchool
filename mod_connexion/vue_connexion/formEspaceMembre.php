@@ -3,7 +3,7 @@
 <?php ob_start(); ?>
     
     <!-- Default form login -->
-<form class="text-center border border-light p-5" action="index.php?module=connexion&action=modifierResp&idMembre=<?=$identifiantResp?>" method="post">
+<form class="text-center border border-light p-5" action="index.php?module=connexion&action=modifierResp" method="post">
 
     <p class="h4 mb-4">Modifier vos informations</p>
 

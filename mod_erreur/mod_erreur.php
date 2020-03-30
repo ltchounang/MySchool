@@ -1,6 +1,6 @@
 <?php
 if(!defined ('CONSTANT') )
-    die ('acces interdit') ;
+die ('acces interdit') ;
 
 if(!empty($messErreur)){
     $message = $messErreur;
@@ -10,9 +10,6 @@ if(!empty($messErreur)){
     
         require_once('mod_etudiant/controlleur/cont_etudiant.php');
         $contEtudiant = new ContEtudiant();
-
-        require_once('mod_etablissement/cont_etablissement.php');
-        $contEtablissement = new ContEtablissement();
 
         switch($page){
 
@@ -30,15 +27,14 @@ if(!empty($messErreur)){
 
             case 'formModifEtud':
                 $contEtudiant->form_updateEtud();
-            break;
-            
+
             case 'formEspaceMembre':
                 $contConnexion->form_espace_membre();
                 break;
-            
-            case 'form_addEtab':
-                $contEtablissement->form_addEtab();
-        
+
+            case 'listeGroupeEtud':
+                $contEtudiant->liste_groupe_etud();
+                break;
             break;
         }
 

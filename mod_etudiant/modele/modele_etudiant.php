@@ -14,15 +14,39 @@ class ModeleEtudiant extends ModeleGenerique{
         return $donnees = $req->fetch();
     }
 
-    public function studentModif_existBD($nomEtud,$prenomEtud,$idEtud){
-        $req = self::$bdd->prepare('SELECT nomEtud,prenomEtud from etudiant where nomEtud = ? and prenomEtud = ? and idEtud != ?');
-        $req->execute(array($nomEtud,$prenomEtud,$idEtud));
+    public function fichier_image($file){
+        $img=NULL;
+        if(!empty($file)) {
+            $file_name = $file['img']['name'];
+            $file_tmp_name = $file['img']['tmp_name'];
+            $file_dest = 'mod_etudiant/photos/'.$file_name;
+            $file_extension = strrchr($file_name, ".");
+        
+        $extensions_autorises = array('.png','.jpg','.jpeg','.gif','.PNG','.JPG','.JPEG','.GIF');
+        if(in_array( $file_extension, $extensions_autorises)) {
+            if (move_uploaded_file($file_tmp_name, $file_dest)) {
+                if($_FILES['img']['error'] == 0) {
+                    $img = $file_dest;
+                }
+                else
+                throw new formAjoutEtudException('Problème avec l\'image');
+            }
+            else
+            throw new formAjoutEtudException('Erreur lors de la récupération de l\'image');
+        }
 
-        return $donnees = $req->fetch();
+        else {
+            echo 'On ne peut pas uploader un fichier qui n\'est pas une image !';
+            //throw new formAjoutEtudException('On ne peut pas uploader un fichier qui n\'est pas une image !');
+        }
     }
+        return $img;
+    } 
 
-    public function add_studentBD($numApo,$photoEtud,$nomEtud,$prenom,$dateNaiss,
+    public function add_studentBD($numApo,$file,$nomEtud,$prenom,$dateNaiss,
     $courriel,$tel,$adrr1,$adrr2,$AnneePromo,$situationActu){
+
+        $photoEtud = self::fichier_image($file);
 
             if(empty($numApo)) $numApo=0; // obligatoire si on veut mettre à null
             if(empty($tel)) $tel=0;
@@ -40,9 +64,13 @@ public function est_present($numEtud){
        $req->execute(array($numEtud));
        return $req->fetchAll();
    }
-  
-    public function get_Students($page){
-        $reponse = self::$bdd->query('SELECT * FROM etudiant order by idEtud desc limit '.(($page-1)*10). ','. 10);
+    public function get_Students($page, $idGroupe){
+        if ($idGroupe == 0)
+            $reponse = self::$bdd->query('SELECT * FROM etudiant order by idEtud desc limit '.(($page-1)*10). ','. 10);
+        else{
+            $reponse = self::$bdd->query('SELECT * FROM etudiant inner join apparteniraugroupe using(idEtud) where idGroupe='.$idGroupe);
+        }
+
         return $reponse;
         $reponse->closeCursor();
     }
@@ -57,11 +85,12 @@ public function est_present($numEtud){
         $req = self::$bdd->prepare('SELECT * FROM etudiant WHERE idEtud = ?');
         $req->execute(array($idEtud));
         return $req->fetch();
-    }
-
-    public function update_studentBD($numApo,$photoEtud,$nomEtud,$prenom,$dateNaiss,
+    }    
+		    
+    public function update_studentBD($numApo,$file,$nomEtud,$prenom,$dateNaiss,
     $courriel,$tel,$adrr1,$adrr2,$AnneePromo,$situationActu,$idEtud){
-        
+        $photoEtud = self::fichier_image($file);
+
         if(empty($numApo)) $numApo=0; // obligatoire si on veut mettre à null
         if(empty($tel)) $tel=0;
         if(empty($dateNaiss)) $dateNaiss='0000-00-00';
@@ -74,13 +103,65 @@ public function est_present($numEtud){
 
     }
     
-    public function delete_studentBD($idEtud){
+    public function delete_studentBD($idEtud,$id){
         $req = self::$bdd->prepare('DELETE FROM former where idEtud = ?');
         $req->execute(array($idEtud));
+        if($id==0){
+            $req2 = self::$bdd->prepare('DELETE FROM apparteniraugroupe where idEtud = ?');
+            $req2->execute(array($idEtud));
 
-        $req2 = self::$bdd->prepare('DELETE FROM etudiant where idEtud = ?');
-        $req2->execute(array($idEtud));
+            $req2 = self::$bdd->prepare('DELETE FROM etudiant where idEtud = ?');
+            $req2->execute(array($idEtud));
+        }else{
+            $req2 = self::$bdd->prepare('DELETE FROM apparteniraugroupe where idEtud = ? and idGroupe = ?');
+            $req2->execute(array($idEtud,$id));
+        }
 
     }
 
+    public function creer_groupe($nom){
+        $req = self::$bdd->prepare('INSERT INTO groupe(nomGroupe) values (?)');
+        $req->execute(array($nom));
+    }
+
+    public function get_groupes(){
+        $req = self::$bdd->query('SELECT * FROM groupe');
+        return $req;
+    }
+
+    public function groupe_exists($nom){
+        $req = self::$bdd->prepare('SELECT idGroupe FROM groupe where nomGroupe=?');
+        $req->execute(array($nom));
+        $donnees = $req->rowCount();
+        return $donnees;
+    }
+
+    public function add_etud_groupe($idEtud, $idGroupe){
+        if (empty($idGroupe)) $idGroupe = 0;
+
+        $req = self::$bdd->prepare('INSERT INTO apparteniraugroupe(idEtud, idGroupe) values(?,?)');
+        $req->execute(array($idEtud, $idGroupe));
+    }
+
+    public function supprimer_groupe($idGroupe){
+        $req = self::$bdd->prepare('DELETE FROM apparteniraugroupe where idGroupe=?');
+        $req->execute(array($idGroupe));
+
+        $req2 = self::$bdd->prepare('DELETE FROM groupe where idGroupe=?');
+        $req2->execute(array($idGroupe));
+    }
+
+    public function nb_etud_dans_groupe($idGroupe){
+        $req = self::$bdd->prepare('SELECT count(idEtud) from apparteniraugroupe where idGroupe=?');
+        $req->execute(array($idGroupe));
+        $donnees = $req->fetch();
+        return $donnees['count(idEtud)'];
+    }
+
+    public function get_groupe_name($id){
+        $req = self::$bdd->prepare('SELECT nomGroupe FROM groupe where idGroupe=?');
+        $req->execute(array($id));
+        $donnees = $req->fetch();
+        return $donnees;
+    }
 }
