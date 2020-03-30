@@ -1,7 +1,13 @@
 
-<?php ob_start(); ?>
 
-<?php require('mod_composant/vue_composant/barreRechercheEtud.php'); ?>
+
+<?php if(empty($detail)){ob_start();require('mod_composant/vue_composant/barreRechercheEtud.php');} ?>
+
+
+<?php 
+if (!empty($idGroupe) && $idGroupe != 0)
+    echo '<h1 style="text-align:center;">Groupe étudiant : '.$nomGroupe['nomGroupe'].'</h1>';
+ ?>
 
 <div id="resultat-recherche"><!-- contient la liste en voyer --> 
 
@@ -33,27 +39,29 @@ if(!empty($listEtudiant)){
             echo '<a href="index.php?module=etudiant&action=listeEtudiant&page='.$i.'">'.$i.'</a>' . ' ';
     }*/
 
-    if (!isset($_GET['page']) or $_GET['page'] == 1) {
-         echo '<a id="lienImgD" onmouseover="changeImgD()" onmouseleave="defaultImgD()" href="index.php?module=etudiant&action=listeEtudiant&page=2" title="page suivante"><img id="flecheD" src="ressources/imgSite/logos/gestion/suivant.png" /></a>';
-        
+
+    if(empty($detail)){
+        if (!isset($_GET['page']) or $_GET['page'] == 1) {
+            echo '<a id="lienImgD" onmouseover="changeImgD()" onmouseleave="defaultImgD()" href="index.php?module=etudiant&action=listeEtudiant&page=2" title="page suivante"><img id="flecheD" src="ressources/imgSite/logos/gestion/suivant.png" /></a>';
+            
+        }
+        else if ($_GET['page'] == $nbPagesTotales){
+            echo '<a onmouseover="changeImgG()" onmouseleave="defaultImgG()" href="index.php?module=etudiant&action=listeEtudiant&page='.($_GET['page']-1) .'" title="page précèdente"><img id="flecheG" src="ressources/imgSite/logos/gestion/prec.png" /></a>';
+        }
+        else {
+            echo '<a id="lienPage1" href="index.php?module=etudiant&action=listeEtudiant&page=1">Page 1 </a>';
+            echo '<a onmouseover="changeImgG()" onmouseleave="defaultImgG()" href="index.php?module=etudiant&action=listeEtudiant&page='.($_GET['page']-1) .'" title="page précèdente"><img id="flecheG" src="ressources/imgSite/logos/gestion/prec.png" /> </a>';
+            echo ' ' . $_GET['page'] .' ';
+            echo '<a onmouseover="changeImgD()" onmouseleave="defaultImgD()" href="index.php?module=etudiant&action=listeEtudiant&page='.($_GET['page']+1) .'" title="page suivante"><img id="flecheD" src="ressources/imgSite/logos/gestion/suivant.png" /></a>';
+            echo '<a id="lienDernierePage" href="index.php?module=etudiant&action=listeEtudiant&page='. $nbPagesTotales .'"> Page ' .$nbPagesTotales . ' </a>';
+        }
     }
-    else if ($_GET['page'] == $nbPagesTotales){
-        echo '<a onmouseover="changeImgG()" onmouseleave="defaultImgG()" href="index.php?module=etudiant&action=listeEtudiant&page='.($_GET['page']-1) .'" title="page précèdente"><img id="flecheG" src="ressources/imgSite/logos/gestion/prec.png" /></a>';
-    }
-    else {
-        echo '<a id="lienPage1" href="index.php?module=etudiant&action=listeEtudiant&page=1">Page 1 </a>';
-        echo '<a onmouseover="changeImgG()" onmouseleave="defaultImgG()" href="index.php?module=etudiant&action=listeEtudiant&page='.($_GET['page']-1) .'" title="page précèdente"><img id="flecheG" src="ressources/imgSite/logos/gestion/prec.png" /> </a>';
-        echo ' ' . $_GET['page'] .' ';
-        echo '<a onmouseover="changeImgD()" onmouseleave="defaultImgD()" href="index.php?module=etudiant&action=listeEtudiant&page='.($_GET['page']+1) .'" title="page suivante"><img id="flecheD" src="ressources/imgSite/logos/gestion/suivant.png" /></a>';
-        echo '<a id="lienDernierePage" href="index.php?module=etudiant&action=listeEtudiant&page='. $nbPagesTotales .'"> Page ' .$nbPagesTotales . ' </a>';
-    }
-        
+
 
 }
 ?>
 
 </div>
 
-<?php $content = ob_get_clean(); ?>
+<?php if(empty($detail)){$content = ob_get_clean();require('template.php'); }?>
 
-<?php require('template.php'); ?>

@@ -2,7 +2,7 @@
 
 
 $(document).ready(function(){
-
+  $('.toast').toast('show');
 /* 
 //affiche l'image que l'utilisateur viens de selectionner
 $("#phtoSelect").change(function(){

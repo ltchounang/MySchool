@@ -10,8 +10,14 @@ class formModifEtudException extends Exception {};
 class formCoException extends Exception {};
 class formInsException extends Exception {};
 class formModifException extends Exception {};
+
 class formAjoutEtabException extends Exception {};
 class formModifEtudEtabException extends Exception {};
+class formImportException extends Exception {};
+
+
+class formGroupeException extends Exception {};
+
 
 try {
     if(isset($_SESSION['monid'])){
@@ -38,7 +44,7 @@ try {
     }
 }
 catch(Exception $e){
-    $messErreur = $e->getMessage();
+    echo $e->getMessage();
 }
 finally {
     require_once('mod_erreur/mod_erreur.php');
