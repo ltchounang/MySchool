@@ -8,8 +8,22 @@ class ModeleEtablissement extends ModeleGenerique{
     }
 
     public function  add_EtabBD($nomEtab,$typeEtab){
-        $req = self::$bdd->prepare('INSERT into etablissement (nomEtablissement,typeEtab) values (?,?)');
-        $req->execute(array($nomEtab,$typeEtab));
+
+        $etab = self::etab_existBD($nomEtab,$typeEtab,"");
+        if( $etab == 0){
+            $req = self::$bdd->prepare('INSERT into etablissement (nomEtablissement,typeEtab) values (?,?)');
+            $req->execute(array($nomEtab,$typeEtab));
+            return self::$bdd->lastInsertId();
+        }
+        else{
+            return $etab['idEtablissement'];
+        }
+    }
+
+    public function supp_EtabDeEtudiantBD($idEtud,$idEtab){
+        $req = self::$bdd->prepare('DELETE FROM former where idEtud = ? and idEtablissement = ?');
+        $req->execute(array($idEtud,$idEtab));
+
     }
 
     public function etab_existBD($nomEtab,$typeEtab,$idEtab){
@@ -25,9 +39,9 @@ class ModeleEtablissement extends ModeleGenerique{
     }
 
     public function add_etablissementBD($nomEtab,$typeEtab,$dateDeb,$dateFin,$typeForm,$idEtud){
-        self::add_EtabBD($nomEtab,$typeEtab);
-        
-        $idEtab = self::$bdd->lastInsertId();
+
+        $idEtab = self::add_EtabBD($nomEtab,$typeEtab);
+
 
         if(empty($dateDeb)) $dateDeb='0000-00-00';
         if(empty($dateFin)) $dateFin='0000-00-00';
@@ -38,11 +52,6 @@ class ModeleEtablissement extends ModeleGenerique{
     public function get_etablissementsBD(){
         return self::$bdd->query('SELECT * FROM etablissement order by idEtablissement desc');
     }
-
-    public function get_typeFormationsBD(){
-        //return self::$bdd->query('SELECT typeFormation FROM former inner join etablissement using(idEtablissement)');
-    }
-
     public function get_EtablissementBD($idEtablissment){
         $req = self::$bdd->prepare('SELECT * FROM etablissement where idEtablissement = ? ');
         $req->execute(array($idEtablissment));
@@ -51,6 +60,13 @@ class ModeleEtablissement extends ModeleGenerique{
 
     public function get_etablissementEtudBD($idEtablissment){
         $req = self::$bdd->prepare('SELECT * FROM etablissement inner join former using (idEtablissement) WHERE former.idEtud = ? ');
+        $req->execute(array($idEtablissment));
+        return $req;
+    }
+
+
+    public function get_EtudiantEtabBD($idEtablissment){
+        $req = self::$bdd->prepare('SELECT * FROM etudiant inner join former using (idEtud) WHERE former.idEtablissement = ? ');
         $req->execute(array($idEtablissment));
         return $req;
     }

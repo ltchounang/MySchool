@@ -32,7 +32,6 @@ if(!defined ('CONSTANT') )
 	
       <a class="btn optionMenu"  href="index.php?module=etudiant&action=importer_fichier" role="button" > Importer fichier excel <img src="ressources/imgSite/logos/gestion/import_logo.png" alt="..." width="32" height="32" title="import"> </a>
 
-
 			</aside>
 
 			<!-- contenu au centre -->

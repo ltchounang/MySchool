@@ -1,10 +1,6 @@
 
 <?php ob_start(); ?>
 
-<?php require('mod_composant/vue_composant/barreRechercheEtab.php'); ?>
-
-<div id="resultat-recherche"><!-- contient la liste en voyer --> 
-
 <div class="container-fluid" >
     <div class="row">
         <div class="">

@@ -53,8 +53,6 @@ class ContEtudiant extends ContGenerique{
         return $img;
     } 
 
-
-
     function form_addEtud(){
         $action = 'ajouterEtudiant';
         $photoEtud = 'bootstrap-icons/icons/person.svg';
@@ -70,15 +68,39 @@ class ContEtudiant extends ContGenerique{
         if($this->modeleEtud->student_existBD(htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom'])) != 0)
             throw new formAjoutEtudException('Impossible d\'ajouter l\'étudiant. Le nom et le prénom ont déjà été attribué à un étudiant. ['.htmlspecialchars($_POST['nom']).' : '.htmlspecialchars($_POST['prenom']).']');
 
+            $photoEtud = self::fichier_image($_FILES);
+        
+      $idEtud = $this->modeleEtud->add_studentBD(htmlspecialchars($_POST['numApogee']),$photoEtud,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
+        htmlspecialchars($_POST['courriel']),htmlspecialchars($_POST['tel']),htmlspecialchars($_POST['adr1']),htmlspecialchars($_POST['adr2']),htmlspecialchars($_POST['anneePromotion']),htmlspecialchars($_POST['situationActuelle']));
+
 
         $idEtud = $this->modeleEtud->add_studentBD(htmlspecialchars($_POST['numApogee']),$_FILES,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
         htmlspecialchars($_POST['courriel']),htmlspecialchars($_POST['tel']),htmlspecialchars($_POST['adr1']),htmlspecialchars($_POST['adr2']),htmlspecialchars($_POST['anneePromotion']),htmlspecialchars($_POST['situationActuelle']));
 
         $this->modeleEtud->add_etud_groupe($idEtud,$_POST['selectGroupe']);
         $this->contEtab->add_etablissement($idEtud);
-        self::list_Student(0);
+               self::back_toPage();
+        $message = 'ETUDIANT AJOUTE';
+        require('mod_etudiant/vue_etudiant/notification.php');
     }
-
+  
+    function back_toPage(){
+        if(isset($_POST['pageRetour'])){
+            if($_POST['pageRetour'] == "ajouterEtudiant"){
+                self::form_addEtud();
+            }
+            elseif($_POST['pageRetour'] != "listeEtud"){
+                self::form_updateEtud();
+            }
+            else{
+                self::list_Student(0);
+            }
+        }
+        else{
+            self::list_Student(0);
+        }
+    }
+  
     function list_Student($idGroupe){
         $nbEtudiants = $this->modeleEtud->nb_students();
         $nomGroupe = $this->modeleEtud->get_groupe_name($idGroupe);
@@ -104,6 +126,7 @@ class ContEtudiant extends ContGenerique{
         //on initialise les variables pour remplir les champs du formulaire
         $action = 'modifierEtudiant&idEtud='.htmlspecialchars($_GET['idEtud']);
         $student = $this->modeleEtud->get_studentBD(htmlspecialchars($_GET['idEtud']));
+        $idEtud = $student['idEtud'];
         $numApo = $student['numApogee'];
         $photoEtud = $student['photoEtud'];
         $nomEtud = $student['nomEtud'];
@@ -142,6 +165,7 @@ class ContEtudiant extends ContGenerique{
       
         $photoEtud = self::fichier_image($_FILES);
         $this->modeleEtud->update_studentBD(htmlspecialchars($_POST['numApogee']),$photoEtud,htmlspecialchars($_POST['nom']),htmlspecialchars($_POST['prenom']),htmlspecialchars($_POST['dateNaiss']),
+
         htmlspecialchars($_POST['courriel']),htmlspecialchars($_POST['tel']),htmlspecialchars($_POST['adr1']),htmlspecialchars($_POST['adr2']),htmlspecialchars($_POST['anneePromotion']),htmlspecialchars($_POST['situationActuelle']),
         htmlspecialchars($_GET['idEtud']));
 
@@ -153,8 +177,12 @@ class ContEtudiant extends ContGenerique{
         $this->contEtab->add_etablissementEtud(htmlspecialchars($_GET['idEtud']));
 
 
-        //on réaffiche la liste des étudiants
-        self::list_Student(0);
+        //on réaffiche la liste des étudiants ou le formulaire en focntion de ce qui a été coché
+        self::back_toPage();
+
+        $message = 'ETUDIANT MODIFIE';
+        require('mod_etudiant/vue_etudiant/notification.php');
+
     }
 
     function delete_student($id){
@@ -163,10 +191,14 @@ class ContEtudiant extends ContGenerique{
     }
     
     public function importer_fichier(){
+        require('mod_etudiant/vue_etudiant/importer_fichier.php');
+    
+    }
 
-    require('mod_etudiant/vue_etudiant/importer_fichier.php');
-   
-}
+    public function delete_EtabDeEtudiant(){
+        $this->contEtab->supp_EtabDeEtudiantBD(htmlspecialchars($_GET['idEtud']),htmlspecialchars($_GET['idEtab']));
+        self::form_updateEtud();
+    }
 public function mise_en_forme_du_message ($message,$nom,$prenom){
 
     $message=str_replace("[nom]", $nom, $message);
@@ -223,7 +255,6 @@ public function validation_mail(){
             require('mod_etudiant/vue_etudiant/confirmation_mail.php');
         }
         
-        
     }
    
     
@@ -237,6 +268,44 @@ public function verification_des_attributs($attr){
                 if($attr[0][$i]!=NULL)
                     array_push($faux,$attr[0][$i]);
 
+
+public function mise_en_forme_du_message ($message,$nom,$prenom){
+
+    $message=str_replace("[nom]", $nom, $message);
+    $message=str_replace("[Nom]", $nom, $message);
+    $message=str_replace("[NOM]", $nom, $message);
+    $message=str_replace("[Prenom]", $prenom, $message);
+    $message=str_replace("[PRENOM]", $prenom, $message);
+    $message=str_replace("[prénom]", $prenom, $message);
+    $message=str_replace("[prenom]", $prenom, $message);
+
+    return $message;
+}
+public function validation_mail(){
+    $list=$_SESSION['list'];
+    unset($_SESSION['list']);
+                    var_dump($list);
+
+    if(isset($_POST['message']) && isset($_POST['sujet'])){
+        $objet=$_POST['sujet'];
+        $lesErreur=array();
+        for($i=0;$i<count($list);$i++){
+            $message=self::mise_en_forme_du_message($_POST['message'],$list[$i]['Nom'],$list[$i]['Prénom']);
+            if(!empty($this->modeleEtud->est_present($list[$i]['N° étudiant Apogée']))  || !mail($list[$i]['Courriel personnel'],$objet,$message)){
+               /* array_push($lesErreurs,$list[$i]);
+                echo $lesErreurs;*/
+                echo $list[$i]['N° étudiant Apogée'];
+            }else{
+                $img='bootstrap-icons/icons/person.svg';
+                var_dump($this->modeleEtud->add_studentBD($list[$i]['N° étudiant Apogée'],$list[$i]['Nom'],$list[$i]['Prénom'],$list[$i]['Date naiss'],
+                $list[$i]['Date naiss'],$list[$i]['Courriel personnel'],$list[$i]['telephone annuel'],$list[$i]['adr1 annuel'],$list[$i]['adr2 annuel'],$list[$i]['Formation - année promotion'],$list[$i]['Situation actuelle']));
+           
+        }
+        if(!empty($lesErreur)){
+            echo'l\'email n\'a pas pu etre envoyé aux eleves suivants :';
+            for($i=0;$i<count($lesErreurs);$i++){
+                 echo $lesErreurs[$i][Prénom].' '.$lesErreurs[$i][Nom].'</br>';
+
             }
         }else{
             require('mod_etudiant/vue_etudiant/confirmation_mail.php');
@@ -244,6 +313,7 @@ public function verification_des_attributs($attr){
         
         
     }
+
     return $faux;
 }
 
@@ -263,13 +333,13 @@ public function premiere_ligne_correct($line){
 public function validation_fichier(){
      if(isset($_FILES)){
 
-
             $nomfichier = $_FILES['fileToUpload']['name']; 
             $extension = strrchr($nomfichier, "."); 
             $tmp_fich = $_FILES['fileToUpload']['tmp_name'];
             $extensions_autorisees = array('.csv');
             if ($_FILES['fileToUpload']['error'] == 0) {
                 if(in_array($extension, $extensions_autorisees)){
+
 
                     $line=self::lecture_fichier($tmp_fich);
                     if(self::premiere_ligne_correct($line)){
@@ -342,6 +412,7 @@ $taille1=count($tab[0]);
             if (!empty($a)) {
                 array_push($array1,$a);
             }
+
         }
     return $array1;
 }
@@ -349,7 +420,6 @@ $taille1=count($tab[0]);
 public function get_groupes(){
     // A FAIRE
 }
-
 
 public function creer_groupe(){
     if (isset($_POST['nomGroupe']) and !empty($_POST['nomGroupe'])){

@@ -13,6 +13,7 @@
 <script src="mod_erreur/script/erreur.js" ></script>
 <script src="mod_etudiant/script/formAjoutEtud.js" ></script>
 <script src="mod_composant/script/barreRecherche.js" ></script>
+
 <script>
 	function changeImgG(){
 		document.getElementById('flecheG').src="ressources/imgSite/logos/gestion/prec2.png";

@@ -54,14 +54,34 @@ aside{
   min-height: 100vh;
 }
 
+aside a{
+  position: fixed;
+  width : 15%;
+  left : 0;
+}
+
+#button2{
+  margin-top: 5%;
+}
+
+#button3{
+  margin-top: 10%;
+}
+
+#button4{
+  margin-top: 15%;
+}
+
 
 
 .optionMenu{
-  width: 90%;
   background-color: darkgrey;
   font-weight: bold;
   font-size: 10px;
 }
+
+
+
 .btn-secondary {
   background-color: darkgrey;
 }
@@ -205,6 +225,17 @@ aside{
 
 #resultat-recherche{
   padding-bottom: 1%;
+}
+
+.toast{
+  position: fixed;
+  width: 15%;
+  bottom: 0;
+  font-weight: bold;
+  font-size: 90%;
+  right : 0;
+  padding: 2%;
+}
 
 }
 

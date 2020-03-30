@@ -33,7 +33,6 @@ try{
                     $contEtudiant->validation_mail();
                     break;
                     
-                    
                 case 'ajouterEtudiant':
                     
                     $contEtudiant->add_Student();
@@ -45,6 +44,7 @@ try{
                     else
                         $idGroupe = 0;
                     $contEtudiant->list_Student($idGroupe);
+
                 break;
 
                 case 'formModifEtud':
@@ -53,6 +53,10 @@ try{
 
                 case 'modifierEtudiant':
                     $contEtudiant->update_Etud();
+                break;
+
+                case 'suppEtabDeEtudiant':
+                    $contEtudiant->delete_EtabDeEtudiant();
                 break;
 
                 case 'suppEtudiant':
@@ -77,6 +81,7 @@ try{
                     break;
                 default:
                     $contEtudiant->list_Student(0);
+
                 break;
             }
         }
