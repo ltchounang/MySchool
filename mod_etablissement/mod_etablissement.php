@@ -29,6 +29,10 @@ try{
                     $contEtablissement->liste_Etablissement();
                 break;
 
+                case 'detailEtab':
+                    $contEtablissement->detail_Etab();
+                break;
+
                 case 'formModifEtablissement':
                     $contEtablissement->form_updateEtab();
                 break;

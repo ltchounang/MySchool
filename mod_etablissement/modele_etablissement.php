@@ -8,8 +8,20 @@ class ModeleEtablissement extends ModeleGenerique{
     }
 
     public function  add_EtabBD($nomEtab,$typeEtab){
-        $req = self::$bdd->prepare('INSERT into etablissement (nomEtablissement,typeEtab) values (?,?)');
-        $req->execute(array($nomEtab,$typeEtab));
+        $etab = self::etab_existBD($nomEtab,$typeEtab,"");
+        if( $etab == 0){
+            $req = self::$bdd->prepare('INSERT into etablissement (nomEtablissement,typeEtab) values (?,?)');
+            $req->execute(array($nomEtab,$typeEtab));
+            return self::$bdd->lastInsertId();
+        }
+        else{
+            return $etab['idEtablissement'];
+        }
+    }
+
+    public function supp_EtabDeEtudiantBD($idEtud,$idEtab){
+        $req = self::$bdd->prepare('DELETE FROM former where idEtud = ? and idEtablissement = ?');
+        $req->execute(array($idEtud,$idEtab));
     }
 
     public function etab_existBD($nomEtab,$typeEtab,$idEtab){
@@ -25,9 +37,7 @@ class ModeleEtablissement extends ModeleGenerique{
     }
 
     public function add_etablissementBD($nomEtab,$typeEtab,$dateDeb,$dateFin,$typeForm,$idEtud){
-        self::add_EtabBD($nomEtab,$typeEtab);
-        
-        $idEtab = self::$bdd->lastInsertId();
+        $idEtab = self::add_EtabBD($nomEtab,$typeEtab);
 
         if(empty($dateDeb)) $dateDeb='0000-00-00';
         if(empty($dateFin)) $dateFin='0000-00-00';
@@ -37,10 +47,6 @@ class ModeleEtablissement extends ModeleGenerique{
 
     public function get_etablissementsBD(){
         return self::$bdd->query('SELECT * FROM etablissement order by idEtablissement desc');
-    }
-
-    public function get_typeFormationsBD(){
-        //return self::$bdd->query('SELECT typeFormation FROM former inner join etablissement using(idEtablissement)');
     }
 
     public function get_EtablissementBD($idEtablissment){
@@ -55,6 +61,12 @@ class ModeleEtablissement extends ModeleGenerique{
         return $req;
     }
 
+    public function get_EtudiantEtabBD($idEtablissment){
+        $req = self::$bdd->prepare('SELECT * FROM etudiant inner join former using (idEtud) WHERE former.idEtablissement = ? ');
+        $req->execute(array($idEtablissment));
+        return $req;
+    }
+
     public function update_etablissementBD($nomEtab,$typeEtab,$idEtab){
         $req = self::$bdd->prepare('UPDATE etablissement SET nomEtablissement = (?) , typeEtab = (?) where idEtablissement = (?)');
         $req->execute(array($nomEtab,$typeEtab,$idEtab));
@@ -62,14 +74,13 @@ class ModeleEtablissement extends ModeleGenerique{
 
     public function update_etablissementEtudBD($nomEtab,$typeEtab,$dateDeb,$dateFin,$typeForm,$idEtab,$idEtud){
         self::update_etablissementBD($nomEtab,$typeEtab,$idEtab);
-        
+
         if(empty($dateDeb)) $dateDeb='0000-00-00';
         if(empty($dateFin)) $dateFin='0000-00-00';
         
         $req2 = self::$bdd->prepare('UPDATE former SET typeFormation = (?) , dateDebut = (?) , dateFin = (?) where idEtablissement = (?) and idEtud = (?)');
         $req2->execute(array($typeForm,$dateDeb,$dateFin,$idEtab,$idEtud));
     }
-
 
     public function delete_etabBD($idEtab){
             $req = self::$bdd->prepare('DELETE FROM former where idEtablissement = ?');

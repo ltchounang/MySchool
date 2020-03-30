@@ -48,9 +48,9 @@ try{
                 case 'modifierEtudiant':
                     $contEtudiant->update_Etud();
                 break;
-
-                case 'suppEtudiant':
-                    $contEtudiant->delete_student();
+                
+                case 'suppEtabDeEtudiant':
+                    $contEtudiant->delete_EtabDeEtudiant();
                 break;
 
                 default:

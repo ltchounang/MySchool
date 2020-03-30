@@ -110,6 +110,22 @@ class ContEtablissement extends ContGenerique{
         }
     }
 
+    public function supp_EtabDeEtudiantBD($idEtud,$idEtab){
+        $this->modeleEtab->supp_EtabDeEtudiantBD($idEtud,$idEtab);
+    }
+
+    public function detail_Etab(){
+        $etab = $this->modeleEtab->get_EtablissementBD(htmlspecialchars($_GET['idEtab']));
+        $listEtudiant = $this->modeleEtab->get_EtudiantEtabBD(htmlspecialchars($_GET['idEtab']));
+        
+        $detail = 'etablissement';
+        $typeEtab = $etab['typeEtab'];
+        $nomEtab = $etab['nomEtablissement'];
+
+        require('mod_etablissement/vue_etablissement/detailEtab.php');
+
+    }
+
     public function delete_etab(){
         $this->modeleEtab->delete_etabBD(htmlspecialchars($_GET['idEtab']));
         self::liste_Etablissement();
