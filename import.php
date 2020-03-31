@@ -10,25 +10,7 @@
 <script src="jquery/popper.js"></script>
 <script src="jquery/bootstrap.js"></script>
 
-<script src="mod_erreur/script/erreur.js" ></script>
-<script src="mod_etudiant/script/formAjoutEtud.js" ></script>
-<script src="mod_composant/script/barreRecherche.js" ></script>
-
-<script>
-	function changeImgG(){
-		document.getElementById('flecheG').src="ressources/imgSite/logos/gestion/prec2.png";
-	}
-
-	function changeImgD(){
-		document.getElementById('flecheD').src="ressources/imgSite/logos/gestion/suivant2.png";
-	}
-
-	function defaultImgG(){
-		document.getElementById('flecheG').src="ressources/imgSite/logos/gestion/prec.png";
-	}
-
-	function defaultImgD(){
-		document.getElementById('flecheD').src="ressources/imgSite/logos/gestion/suivant.png";
-	}
-</script>
-
+<script src="modules/mod_erreur/script/erreur.js" ></script>
+<script src="modules/mod_etudiant/script/formAjoutEtud.js" ></script>
+<script src="modules/mod_composant/script/barreRecherche.js" ></script>
+<script src="modules/mod_etudiant/script/defilementPage.js" ></script>
